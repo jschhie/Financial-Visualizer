@@ -31,7 +31,7 @@ class ExpenseTracker:
 
         # Show Current Balance
         Label(self.main_frame, text="Current Balance: ").grid(sticky=E)
-        
+
         self.curr_balance_text = Entry(self.main_frame)
         self.curr_balance_text.insert(END, '$' + self.curr_balance)
         self.curr_balance_text.config(state="disabled")
