@@ -79,14 +79,12 @@ class ExpenseTracker:
         back_button = Button(self.new_txn_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
         back_button.grid(row=5, column=1)
-
-        pass
+    
 
     def deposit_money(self, event):
         # TODO Split curr_balance by '.' decimal delimiter
         # TODO assumes WHOLE numbers for now
         self.curr_balance = str(int(self.curr_balance) + int(self.user_amount.get()))
-        print('Current new balance: $', self.curr_balance)
         pass
 
 
