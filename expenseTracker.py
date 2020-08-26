@@ -1,32 +1,31 @@
-# DRAFT: Personal Expenses Tracker GUI
-# path: vim ~/Desktop/projects/py_study/tk_samples/expenseTracker.py
+# Personal Expenses Tracker GUI
 from tkinter import *
-
-
-def raise_frame(frame):
-    frame.tkraise()
-
+from tkinter import messagebox
 
 class ExpenseTracker:
     
     def __init__(self, master):
         self.master = master
-        
         self.curr_balance = "0"
 
+        # Initialize all frames
         self.main_frame = Frame(master)
         self.new_txn_frame = Frame(master)
         self.history_frame = Frame(master)
         
         for f in (self.main_frame, self.new_txn_frame, self.history_frame):
-            f.grid(row=0, column=0, sticky="news")
+            f.grid(row=0, column=0, sticky="NEWS")
 
-        raise_frame(self.main_frame)
-        self.create_main_frame()
+        self.init_main_frame()
+        self.init_new_txn_frame()
+        self.init_history_frame() # TODO
+
+        # Display Main Frame by default
+        self.main_frame.tkraise()
 
 
-    def create_main_frame(self):
-        # Show main prompt
+    def init_main_frame(self):
+        # Show Main Menu
         Label(self.main_frame, text="Main Menu").grid(row=0, columnspan=2)
 
         # Show Current Balance
@@ -42,7 +41,7 @@ class ExpenseTracker:
 
         # New Transaction Button
         new_txn_button = Button(self.main_frame, text="New Transaction")
-        new_txn_button.bind("<Button-1>", self.make_new_txn)
+        new_txn_button.bind("<Button-1>", self.add_new_txn)
         new_txn_button.grid(row=2, column=1)
 
         # View History Button
@@ -55,9 +54,8 @@ class ExpenseTracker:
         quit_button.grid(row=4, column=1)
 
 
-    def make_new_txn(self, event):
-        # Show new frame and prompt
-        raise_frame(self.new_txn_frame)
+    def init_new_txn_frame(self):
+        # Show New Transaction Prompt
         Label(self.new_txn_frame, text="Create New Transaction").grid(row=0, columnspan=2)
 
         # Amount Label and Entry
@@ -70,10 +68,15 @@ class ExpenseTracker:
         self.user_date = Entry(self.new_txn_frame)
         self.user_date.grid(row=2, column=1)
 
-        # Determine if Adding or Deducting from Current Balance
+        # Create Deposit Button
         deposit_button = Button(self.new_txn_frame, text="Deposit")
         deposit_button.bind("<Button-1>", self.deposit_money)
         deposit_button.grid(row=3, column=1)
+
+        # Create Withdraw Button
+        withdraw_button = Button(self.new_txn_frame, text="Withdraw")
+        withdraw_button.bind("<Button-1>", self.withdraw_money)
+        withdraw_button.grid(row=4, column=1)
 
         # Back to Main Menu Button
         back_button = Button(self.new_txn_frame, text="Return to Main Menu")
@@ -81,29 +84,60 @@ class ExpenseTracker:
         back_button.grid(row=5, column=1)
     
 
+    def init_history_frame(self):
+        # Show View History Prompt
+        Label(self.history_frame, text="View History").grid(row=0, columnspan=2)
+        # TODO
+        # Add Viewer Modes: View Deposits, View Withdrawals (by Date/Tag)
+
+        # Back to Main Menu Button
+        back_button = Button(self.history_frame, text="Return to Main Menu")
+        back_button.bind("<Button-1>", self.return_to_main)
+        back_button.grid(row=1, column=1)
+        pass
+
+
+    def add_new_txn(self, event):
+        self.new_txn_frame.tkraise()
+        pass
+
+
     def deposit_money(self, event):
         # TODO Split curr_balance by '.' decimal delimiter
         # TODO assumes WHOLE numbers for now
-        self.curr_balance = str(int(self.curr_balance) + int(self.user_amount.get()))
+        try:
+            self.curr_balance = str(int(self.curr_balance) + int(self.user_amount.get()))
+        except:
+            messagebox.showerror("Deposit Amount::Input Error", "Please enter a valid amount to deposit.")
+            pass
+
+
+    def withdraw_money(self, event):
+        # TODO Handle negative amounts
+        try:
+            self.curr_balance = str(int(self.curr_balance) - int(self.user_amount.get()))
+        except:
+            messagebox.showerror("Withdraw Amount::Input Error", "Please enter a valid amount to withdraw.")
+            pass
+
+
+    def view_history(self, event):
+        self.history_frame.tkraise()
         pass
 
 
     def return_to_main(self, event):
-        # TODO Get updated current balance
+        # Get most up-to-date balance
         self.curr_balance_text.config(state="normal")
         self.curr_balance_text.delete(0, END)
         self.curr_balance_text.insert(END, '$' + self.curr_balance)
         self.curr_balance_text.config(state="disabled")
-        raise_frame(self.main_frame)
-        pass
+
+        # Go to Main Frame
+        self.main_frame.tkraise()
 
 
-    def view_history(self, event):
-        print('View History')
-        raise_frame(self.history_frame)
-        pass
-
-
+# Run Program
 root = Tk()
 root.geometry("500x500")
 root.title('Personal Expenses Tracker')
