@@ -54,7 +54,7 @@ class ExpenseTracker:
                     MONTH INTEGER NOT NULL,
                     DAY INTEGER NOT NULL,
                     YEAR INTEGER NOT NULL,
-                    VALUE REAL NOT NULL,
+                    CURR_BALANCE REAL NOT NULL,
                     IS_WITHDRAW INTEGER DEFAULT 0,
                     TAG CHAR(30));
                     ''')
