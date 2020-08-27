@@ -2,6 +2,9 @@
 from tkinter import *
 from tkinter import messagebox
 
+import sqlite3 as sqlite
+
+conn = sqlite.connect('all_expenses.db')
 
 class ExpenseTracker:
     
@@ -25,8 +28,31 @@ class ExpenseTracker:
         self.init_withdraw_frame()
         self.init_history_frame() # TODO
 
+        # Create/Load SQL Database
+        self.init_db()
+
         self.main_frame.tkraise()
 
+
+    def init_db(self):
+        ''' Creates a new database if it DNE. '''
+        #conn = sqlite.connect('all_expenses.db')
+        try:
+            conn.create(''' CREATE TABLE EXPENSES
+                    (TID INTEGER PRIMARY KEY,
+                    MONTH INTEGER NOT NULL,
+                    DAY INTEGER NOT NULL,
+                    YEAR INTEGER NOT NULL,
+                    VALUE REAL NOT NULL,
+                    IS_WITHDRAW INTEGER DEFAULT 0,
+                    TAG CHAR(30));
+                    ''')
+        except:
+            print('already created database')
+            pass
+        #finally:
+        #    print('closing database now.')
+        #    conn.close()
 
     def init_main_frame(self):
         ''' Initialize Main Frame. '''
@@ -54,8 +80,15 @@ class ExpenseTracker:
         view_hist_button.grid(row=3, column=1)
         
         # Quit Button
-        quit_button = Button(self.main_frame, text="Quit", command=self.master.quit)
+        quit_button = Button(self.main_frame, text="Quit")
+        quit_button.bind("<Button-1>", self.custom_quit)
         quit_button.grid(row=4, column=1)
+
+
+    def custom_quit(self, event):
+        conn.commit()
+        conn.close()
+        self.master.quit() # ADDED
 
 
     def init_new_txn_frame(self):
@@ -153,6 +186,7 @@ class ExpenseTracker:
                 
                 # Successful New Transaction (Deposit/Withdraw)
                 self.curr_balance = pending_total
+                return True
 
             except:
                 messagebox.showerror("Input Error", 
@@ -162,27 +196,41 @@ class ExpenseTracker:
         except:
             messagebox.showerror("Input Error", "Please enter a valid amount.")
 
+        # Indicate Failure
+        return False
 
     def add_new_txn(self, event):
         self.new_txn_frame.tkraise()
 
 
     def deposit_money(self, event):
-        self.check_txn_input(is_deposit_txn=True)
+        if (self.check_txn_input(is_deposit_txn=True)):
+            # Redirect to Main Menu
+            messagebox.showinfo('Successful Transaction',
+                'Deposit completed.\nReturning to Main Menu.')
+            self.return_to_main(event="<Buttton-1>")
+        else:
+            # Remain on current Frame
+            pass
 
 
     def withdraw_money(self, event):
-        self.check_txn_input(is_deposit_txn=False)
-        self.withdraw_frame.tkraise()
-        pass
+        if (self.check_txn_input(is_deposit_txn=False)):
+            self.withdraw_frame.tkraise()
+        else:
+            # Remain on current Frame
+            pass
+
 
     def get_tag(self, event):
         widget = event.widget
-        idx = int(widget.curselection()[0])
-        tag_value = widget.get(idx)
-        messagebox.showinfo('Successful Transaction',
-            'Withdrawal for %s completed.\nReturning to Main Menu.' % tag_value)
-        self.return_to_main(event="<Buttton-1>")
+        if (result_tuple:=widget.curselection()):
+            idx = int(result_tuple[0])
+            tag_value = widget.get(idx)
+            messagebox.showinfo('Successful Transaction',
+                'Withdrawal for %s completed.\nReturning to Main Menu.' % tag_value)
+            self.return_to_main(event="<Buttton-1>")
+
 
     def view_history(self, event):
         self.history_frame.tkraise()
@@ -196,6 +244,10 @@ class ExpenseTracker:
         self.curr_balance_text.delete(0, END)
         self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
         self.curr_balance_text.config(state="disabled")
+
+        # Clear current contents
+        for widget in (self.user_date, self.user_amount):
+            widget.delete(0, END)
 
         # Go to Main Frame
         self.main_frame.tkraise()
