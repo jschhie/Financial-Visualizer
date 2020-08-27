@@ -2,37 +2,41 @@
 from tkinter import *
 from tkinter import messagebox
 
+
 class ExpenseTracker:
     
     def __init__(self, master):
+        ''' Initialize ExpenseTracker and open its database (TODO).'''
         self.master = master
-        self.curr_balance = "0"
+        self.curr_balance = 0.0
 
         # Initialize all frames
         self.main_frame = Frame(master)
         self.new_txn_frame = Frame(master)
+        self.withdraw_frame = Frame(master)
         self.history_frame = Frame(master)
         
-        for f in (self.main_frame, self.new_txn_frame, self.history_frame):
+        for f in (self.main_frame, self.new_txn_frame, 
+                self.withdraw_frame, self.history_frame):
             f.grid(row=0, column=0, sticky="NEWS")
 
         self.init_main_frame()
         self.init_new_txn_frame()
+        self.init_withdraw_frame()
         self.init_history_frame() # TODO
 
-        # Display Main Frame by default
         self.main_frame.tkraise()
 
 
     def init_main_frame(self):
-        # Show Main Menu
+        ''' Initialize Main Frame. '''
         Label(self.main_frame, text="Main Menu").grid(row=0, columnspan=2)
 
         # Show Current Balance
         Label(self.main_frame, text="Current Balance: ").grid(sticky=E)
 
         self.curr_balance_text = Entry(self.main_frame)
-        self.curr_balance_text.insert(END, '$' + self.curr_balance)
+        self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
         self.curr_balance_text.config(state="disabled")
         self.curr_balance_text.grid(row=1, column=1)
 
@@ -55,8 +59,8 @@ class ExpenseTracker:
 
 
     def init_new_txn_frame(self):
-        # Show New Transaction Prompt
-        Label(self.new_txn_frame, text="Create New Transaction").grid(row=0, columnspan=2)
+        ''' Initialize New Transaction Frame. '''
+        Label(self.new_txn_frame, text="Add New Transaction").grid(columnspan=2)
 
         # Amount Label and Entry
         Label(self.new_txn_frame, text="Amount: ").grid(row=1, sticky=E)
@@ -84,8 +88,22 @@ class ExpenseTracker:
         back_button.grid(row=5, column=1)
     
 
+    def init_withdraw_frame(self):
+        ''' Initialize New Frame specifically for Withdrawals. '''
+        Label(self.withdraw_frame, text="Select a Tag: ").grid(row=0, sticky=E)
+
+        # Associate withdrawal with a Tag
+        tags_listbox = Listbox(self.withdraw_frame)
+        tags = ['Shopping', 'Health', 'Food', 'Rent', 'Other']
+        for tag in tags:
+            tags_listbox.insert(END, tag)
+
+        tags_listbox.bind("<<ListboxSelect>>", self.get_tag)
+        tags_listbox.grid(row=0, column=1)
+
+
     def init_history_frame(self):
-        # Show View History Prompt
+        ''' Initialize View History Frame. '''
         Label(self.history_frame, text="View History").grid(row=0, columnspan=2)
         # TODO
         # Add Viewer Modes: View Deposits, View Withdrawals (by Date/Tag)
@@ -97,29 +115,74 @@ class ExpenseTracker:
         pass
 
 
+    def check_txn_input(self, is_deposit_txn):
+        ''' Checks for valid amount to deposit/withdraw and valid 
+        date entry in (MM/DD/YYYY) format. '''
+        try:
+            # Check User Amount
+            pending_total = float(self.curr_balance)
+            pending_change = float(self.user_amount.get())
+
+            # Make sure amount is positive
+            assert(pending_change > 0.0)
+
+            enough_funds = True
+            if is_deposit_txn:
+                pending_total += pending_change
+            else:
+                # Otherwise, is_withdraw_txn=True
+                if pending_total < pending_change:
+                    enough_funds = False
+                pending_total -= pending_change
+
+            try:
+                # Check User Dates
+                user_date = self.user_date.get()
+                month, day, year = user_date.split('/')
+                for date_input in (month, day, year):
+                    assert(date_input.isnumeric())
+
+                assert(int(month) <= 12 and int(month) > 0)
+                assert(int(day) <= 31 and int(month) > 0)
+                assert(int(year) >= 2000 and int(year) <= 2020)
+
+                # Warn user if any insufficient funds
+                if (enough_funds == False):
+                    messagebox.showwarning('Insufficient Funds', 
+                        'Amount to withdraw is greater than current balance.')
+                
+                # Successful New Transaction (Deposit/Withdraw)
+                self.curr_balance = pending_total
+
+            except:
+                messagebox.showerror("Input Error", 
+                    "Please use (MM/DD/YYYY) format.\
+                    \nYear should be between 2000 and 2020.")
+        
+        except:
+            messagebox.showerror("Input Error", "Please enter a valid amount.")
+
+
     def add_new_txn(self, event):
         self.new_txn_frame.tkraise()
-        pass
 
 
     def deposit_money(self, event):
-        # TODO Split curr_balance by '.' decimal delimiter
-        # TODO assumes WHOLE numbers for now
-        try:
-            self.curr_balance = str(int(self.curr_balance) + int(self.user_amount.get()))
-        except:
-            messagebox.showerror("Deposit Amount::Input Error", "Please enter a valid amount to deposit.")
-            pass
+        self.check_txn_input(is_deposit_txn=True)
 
 
     def withdraw_money(self, event):
-        # TODO Handle negative amounts
-        try:
-            self.curr_balance = str(int(self.curr_balance) - int(self.user_amount.get()))
-        except:
-            messagebox.showerror("Withdraw Amount::Input Error", "Please enter a valid amount to withdraw.")
-            pass
+        self.check_txn_input(is_deposit_txn=False)
+        self.withdraw_frame.tkraise()
+        pass
 
+    def get_tag(self, event):
+        widget = event.widget
+        idx = int(widget.curselection()[0])
+        tag_value = widget.get(idx)
+        messagebox.showinfo('Successful Transaction',
+            'Withdrawal for %s completed.\nReturning to Main Menu.' % tag_value)
+        self.return_to_main(event="<Buttton-1>")
 
     def view_history(self, event):
         self.history_frame.tkraise()
@@ -127,10 +190,11 @@ class ExpenseTracker:
 
 
     def return_to_main(self, event):
+        ''' Returns to Main Frame. '''
         # Get most up-to-date balance
         self.curr_balance_text.config(state="normal")
         self.curr_balance_text.delete(0, END)
-        self.curr_balance_text.insert(END, '$' + self.curr_balance)
+        self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
         self.curr_balance_text.config(state="disabled")
 
         # Go to Main Frame
