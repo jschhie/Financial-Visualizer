@@ -5,8 +5,6 @@ from tkinter import messagebox
 import sqlite3 as sqlite
 import pickle
 import matplotlib.pyplot as plt
-import numpy as np
-
 
 conn = sqlite.connect('expenses.db')
 
@@ -14,7 +12,6 @@ digit_month_map = {1: "Jan.", 2: "Feb.", 3: "Mar.",
                     4: "Apr.", 5: "May", 6: "Jun.", 
                     7: "Jul.", 8: "Aug.", 9: "Sep.",
                     10: "Oct.", 11: "Nov.", 12: "Dec."}
-
 
 class ExpenseTracker:
     
@@ -93,21 +90,14 @@ class ExpenseTracker:
         view_hist_button.grid(row=3, column=1)
         
         # Quit Button
-        quit_button = Button(self.main_frame, text="Quit")
+        quit_button = Button(self.main_frame, text="Save Changes")
         quit_button.bind("<Button-1>", self.custom_quit)
         quit_button.grid(row=4, column=1)
 
 
     def custom_quit(self, event):
+        # Save current session's transactions and updated balance
         conn.commit()
-
-        # ------- DEBUGGING PURPOSES ---------
-        cursor = conn.execute(''' SELECT * FROM EXPENSES''')
-        for i, row in enumerate(cursor):
-            print("Record ", i, " has ", row)
-        # ------- DEBUGGING PURPOSES ---------
-
-        # Save current session's balance
         with open('curr_balance.pickle', 'wb') as f:
             pickle.dump(self.curr_balance, f)
 
@@ -272,11 +262,21 @@ class ExpenseTracker:
             WHERE YEAR == (?) AND MONTH == (?)
             GROUP BY IS_WITHDRAW ''', (user_year, user_month))
 
+        # Default
+        deposits = None
+        withdrawals = None
+
         for i, row in enumerate(outputs):
             if i == 0:
                 deposits = row[0]
             elif i == 1:
                 withdrawals = row[0]
+        
+        if deposits is None or withdrawals is None:
+            messagebox.showerror("Query Failure",
+                "No existing transactions that fit your query.\
+                Please try a different year and/or month. ")
+            return
 
         self.show_plot(exp_values=[deposits, withdrawals], 
             exp_labels=['Deposits', 'Withdrawals'],
