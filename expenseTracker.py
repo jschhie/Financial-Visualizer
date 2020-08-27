@@ -3,7 +3,6 @@ from tkinter import *
 from tkinter import messagebox
 
 import sqlite3 as sqlite
-
 import pickle
 
 '''
@@ -17,7 +16,6 @@ import pickle
         [] Use matlabplot to Plot Graphs
 '''
 
-# Global variable
 conn = sqlite.connect('expenses.db')
 
 class ExpenseTracker:
@@ -30,7 +28,7 @@ class ExpenseTracker:
         # Load most up-to-date balance
         try:
             with open('curr_balance.pickle', 'rb') as f:
-                self.curr_balance = pickle.load(f) # ADDED
+                self.curr_balance = pickle.load(f)
         except FileNotFoundError:
             self.curr_balance = 0.0
 
@@ -47,11 +45,11 @@ class ExpenseTracker:
         self.init_main_frame()
         self.init_new_txn_frame()
         self.init_withdraw_frame()
-        self.init_history_frame() # TODO
-
+        self.init_history_frame()
+        
         # Create/Load SQL Database
         self.init_db()
-
+        # Go to Main Menu by default
         self.main_frame.tkraise()
 
 
@@ -68,15 +66,15 @@ class ExpenseTracker:
                     TAG CHAR(30) DEFAULT NULL);
                     ''')
         except Exception as e:
+            # Force quit on error
             print('Exception: ', e)
-            pass
+            self.master.quit()
 
 
     def init_main_frame(self):
         ''' Initialize Main Frame. '''
-        Label(self.main_frame, text="Main Menu").grid(column=1) # changed from columnspan=2
-
-        # Show Current Balance
+        # Show Main Menu and Current Balance
+        Label(self.main_frame, text="Main Menu").grid(column=1)
         Label(self.main_frame, text="Current Balance: ").grid(sticky=E)
 
         self.curr_balance_text = Entry(self.main_frame)
@@ -122,7 +120,7 @@ class ExpenseTracker:
 
     def init_new_txn_frame(self):
         ''' Initialize New Transaction Frame. '''
-        Label(self.new_txn_frame, text="Add New Transaction").grid(column=1) # changed from columnspan=2
+        Label(self.new_txn_frame, text="Add New Transaction").grid(column=1)
 
         # Amount Label and Entry
         Label(self.new_txn_frame, text="Amount: ").grid(row=1, sticky=E)
@@ -159,9 +157,10 @@ class ExpenseTracker:
         tags_listbox = Listbox(self.withdraw_frame, selectmode=BROWSE, height=7)
         tags = ['Shopping', 'Health', 'Food/Drink', 'Bills', 
             'Travel', 'Entertainment', 'Other']
+        
         for tag in tags:
             tags_listbox.insert(END, tag)
-
+            
         tags_listbox.bind("<<ListboxSelect>>", self.get_tag)
         tags_listbox.grid(row=1, column=1)
 
@@ -198,14 +197,13 @@ class ExpenseTracker:
     def check_txn_input(self, is_deposit_txn):
         ''' Checks for valid amount to deposit/withdraw and valid 
         date entry in (MM/DD/YYYY) format. '''
+        # Check User Amount first
         try:
-            # Check User Amount
             pending_total = float(self.curr_balance)
             pending_change = float(self.user_amount.get())
 
             # Make sure amount is positive
             assert(pending_change > 0.0)
-
             enough_funds = True
             if is_deposit_txn:
                 pending_total += pending_change
@@ -214,9 +212,8 @@ class ExpenseTracker:
                 if pending_total < pending_change:
                     enough_funds = False
                 pending_total -= pending_change
-
+            # Next, check User Dates
             try:
-                # Check User Dates
                 user_date = self.user_date.get()
                 month, day, year = user_date.split('/')
                 for date_input in (month, day, year):
@@ -226,28 +223,25 @@ class ExpenseTracker:
                 assert(int(day) <= 31 and int(month) > 0)
                 assert(int(year) >= 2000 and int(year) <= 2020)
 
-                # Warn user if any insufficient funds
+                # Warn user if any insufficient funds but continue to process txn
                 if (enough_funds == False):
                     messagebox.showwarning('Insufficient Funds', 
                         'Amount to withdraw is greater than current balance.')
-                
                 # Successful New Transaction (Deposit/Withdraw)
                 self.curr_balance = pending_total
-
                 # Return a tuple of user input
                 return (month, day, year, pending_change)
-
             except:
+                # Indicate txn failure
                 messagebox.showerror("Input Error", 
                     "Please use (MM/DD/YYYY) format.\
                     \nYear should be between 2000 and 2020.")
-        
         except:
-            messagebox.showerror("Input Error", "Please enter a valid amount.")
+            # Indicate txn failure
+            messagebox.showerror("Input Error", "Please enter a valid, positive amount.")
+        return () # Empty tuple
 
-        # Indicate Failure
-        return ()
-
+    
     def add_new_txn(self, event):
         self.new_txn_frame.tkraise()
 
@@ -259,16 +253,12 @@ class ExpenseTracker:
             conn.execute(''' INSERT INTO EXPENSES 
                 (MONTH, DAY, YEAR, AMOUNT) \
                 VALUES (?, ?, ?, ?)''', self.results_tuple)
-
-            print('inserted new record as deposit')
-
-            # Redirect to Main Menu
+            # Indicate successful deposit
             deposit_val = format(self.results_tuple[3], '.2f')
-
             messagebox.showinfo('Successful Transaction',
                 'Deposit of $%s completed.\nReturning to Main Menu.'
                 % deposit_val)
-
+            # Redirect to Main Menu
             self.return_to_main(event="<Buttton-1>")
         else: 
             # results_tuple is empty tuple meaning invalid user input
@@ -285,7 +275,6 @@ class ExpenseTracker:
         else:
             # results_tuple is empty tuple meaning invalid user input
             # Remain on current Frame
-            self.results_tuple = () # empty tuple
             pass
 
 
@@ -295,26 +284,21 @@ class ExpenseTracker:
             # Get corresponding Tag
             idx = int(selections[0])
             tag_value = widget.get(idx)
-
             # Insert new record as withdrawal
-            
-            print('GET TAG():: ', self.results_tuple)
             month, day, year, amount = self.results_tuple
-            
             conn.execute(''' INSERT INTO EXPENSES 
                (MONTH, DAY, YEAR, AMOUNT, IS_WITHDRAW, TAG) \
                VALUES (?, ?, ?, ?, 1, ?)''', (month, day, year, amount, tag_value))
-
+            # Indicate successful withdrawal
             withdraw_val = format(amount, '.2f')
             messagebox.showinfo('Successful Transaction',
                 'Withdrawal of $%s for %s completed.\nReturning to Main Menu.' 
                 % (withdraw_val, tag_value))
-
+            # Redirect to Main Menu
             self.return_to_main(event="<Buttton-1>")
-
+            
 
     def view_history(self, event):
-        # TODO
         self.history_frame.tkraise()
         pass
 
@@ -326,16 +310,14 @@ class ExpenseTracker:
         self.curr_balance_text.delete(0, END)
         self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
         self.curr_balance_text.config(state="disabled")
-
         # Clear current contents
         for widget in (self.user_date, self.user_amount):
             widget.delete(0, END)
-
-        # Go to Main Frame
+        # Redirect to Main Frame
         self.main_frame.tkraise()
 
 
-# Run Program
+# Run ExpensesTracker GUI
 root = Tk()
 root.geometry("500x500")
 root.title('Personal Expenses Tracker')
