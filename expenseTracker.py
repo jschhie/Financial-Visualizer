@@ -4,13 +4,13 @@ from tkinter import messagebox
 
 import sqlite3 as sqlite
 
+import pickle
 
 '''
 # My TODO List
 
 [x] Insert Transaction Records into Database
-    [] Update self.curr_balance if DB created previously!!!
-    // Defaults to 0.00 when program starts
+    [x] Update self.curr_balance if DB created previously
 [] Work on View History
     [] Add View Deposits/Withdrawals Button
         [] Use SQL Queries: View By ... Month, Year, or Tag
@@ -25,8 +25,14 @@ class ExpenseTracker:
     def __init__(self, master):
         ''' Initialize ExpenseTracker and open its database. '''
         self.master = master
-        self.curr_balance = 0.0
         self.results_tuple = () # Stores user input if valid
+        
+        # Load most up-to-date balance
+        try:
+            with open('curr_balance.pickle', 'rb') as f:
+                self.curr_balance = pickle.load(f) # ADDED
+        except FileNotFoundError:
+            self.curr_balance = 0.0
 
         # Initialize all frames
         self.main_frame = Frame(master)
@@ -57,9 +63,9 @@ class ExpenseTracker:
                     MONTH INTEGER NOT NULL,
                     DAY INTEGER NOT NULL,
                     YEAR INTEGER NOT NULL,
-                    NEW_BALANCE REAL NOT NULL,
+                    AMOUNT REAL NOT NULL,
                     IS_WITHDRAW INTEGER DEFAULT 0,
-                    TAG CHAR(30));
+                    TAG CHAR(30) DEFAULT NULL);
                     ''')
         except Exception as e:
             print('Exception: ', e)
@@ -106,8 +112,12 @@ class ExpenseTracker:
             print("Record ", i, " has ", row)
         # ------- DEBUGGING PURPOSES ---------
 
+        # Save current session's balance
+        with open('curr_balance.pickle', 'wb') as f:
+            pickle.dump(self.curr_balance, f) # hello
+
         conn.close()
-        self.master.quit() # ADDED
+        self.master.quit()
 
 
     def init_new_txn_frame(self):
@@ -207,7 +217,7 @@ class ExpenseTracker:
                 self.curr_balance = pending_total
 
                 # Return a tuple of user input
-                return (month, day, year, self.curr_balance)
+                return (month, day, year, pending_change)
 
             except:
                 messagebox.showerror("Input Error", 
@@ -232,7 +242,7 @@ class ExpenseTracker:
             # https://pythonprogramming.net/sqlite-part-2-dynamically-inserting-database-timestamps/
 
             conn.execute(''' INSERT INTO EXPENSES 
-                (MONTH, DAY, YEAR, NEW_BALANCE) \
+                (MONTH, DAY, YEAR, AMOUNT) \
                 VALUES (?, ?, ?, ?)''', self.results_tuple)
 
             print('inserted new record as deposit')
@@ -276,7 +286,7 @@ class ExpenseTracker:
             print('GET TAG():: ', self.results_tuple)
             month, day, year, new_val = self.results_tuple
             conn.execute(''' INSERT INTO EXPENSES 
-               (MONTH, DAY, YEAR, NEW_BALANCE, IS_WITHDRAW, TAG) \
+               (MONTH, DAY, YEAR, AMOUNT, IS_WITHDRAW, TAG) \
                VALUES (?, ?, ?, ?, 1, ?)''', (month, day, year, new_val, tag_value))
 
             withdraw_val = format(float(self.user_amount.get()), '.2f')
