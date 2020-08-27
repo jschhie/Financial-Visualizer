@@ -4,19 +4,17 @@ from tkinter import messagebox
 
 import sqlite3 as sqlite
 import pickle
+import matplotlib.pyplot as plt
+import numpy as np
 
-'''
-# My TODO List
-
-[x] Insert Transaction Records into Database
-    [x] Update self.curr_balance if DB created previously
-[] Work on View History
-    [] Add View Deposits/Withdrawals Button
-        [] Use SQL Queries: View By ... Month, Year, or Tag
-        [] Use matlabplot to Plot Graphs
-'''
 
 conn = sqlite.connect('expenses.db')
+
+digit_month_map = {1: "Jan.", 2: "Feb.", 3: "Mar.", 
+                    4: "Apr.", 5: "May", 6: "Jun.", 
+                    7: "Jul.", 8: "Aug.", 9: "Sep.",
+                    10: "Oct.", 11: "Nov.", 12: "Dec."}
+
 
 class ExpenseTracker:
     
@@ -65,10 +63,9 @@ class ExpenseTracker:
                     IS_WITHDRAW INTEGER DEFAULT 0,
                     TAG CHAR(30) DEFAULT NULL);
                     ''')
-        except Exception as e:
-            # Force quit on error
-            print('Exception: ', e)
-            self.master.quit()
+        except:
+            # DB and table already exist
+            pass
 
 
     def init_main_frame(self):
@@ -197,25 +194,93 @@ class ExpenseTracker:
         back_button.grid(row=5, column=1)
 
 
+    def check_view_filters(self):
+        try:
+            in_year = int(self.year_filter.get())
+            in_month = int(self.month_filter.get())
+            assert(in_year >= 2000 and in_year <= 2020)
+            assert(in_month >= 1 and in_month <= 12)
+            return (in_year, in_month) # Success
+        except:
+            messagebox.showerror("Input Error", 
+                "Please provide valid month and year combination.")
+            return () # Failure
+
+
+    def show_plot(self, exp_values, exp_labels, u_month, u_year):
+        # Set up pie chart
+        fig, ax = plt.subplots()
+        ax.pie(exp_values, labels=exp_labels, autopct='%1.1f%%', pctdistance=0.85)
+        ax.axis('equal')
+
+        # Draw Donut within Pie
+        center_circle = plt.Circle((0,0), 0.70, fc='white')
+        fig = plt.gcf()
+        fig.gca().add_artist(center_circle)
+
+        # Plot data
+        plt.title('Expenses Report for %s %d' % (digit_month_map[u_month], u_year))
+        plt.tight_layout()
+        plt.show()
+
+
     def view_by_tag(self, event):
-        # SQL Query by Year, Month, and Tag
+        ''' Perform SQL Query to view Transactions by Tag for specified year and month. '''
+        # Check for valid numeric inputs
+        if (len(filters:=self.check_view_filters()) == 0):
+            return
+
+        # Otherwise, unpack filters
+        user_year, user_month = filters
+
         outputs = conn.execute(''' 
             SELECT SUM(AMOUNT), TAG FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?) AND IS_WITHDRAW == 1
-            GROUP BY TAG ''', 
-            (int(self.year_filter.get()), int(self.month_filter.get())))
+            GROUP BY TAG ''', (user_year, user_month))
 
-        for row in outputs:
-            print("ROW DATA: ", row)
+        all_amounts = []
+        all_tags = []
+        for row in outputs: 
+            # Each row is a tuple, so unpack values
+            temp_amt, temp_tag = row
+            all_amounts.append(temp_amt)
+            all_tags.append(temp_tag)
 
-        # Plot results
-        pass
+        if len(all_amounts) == 0:
+            messagebox.showerror("Query Failure",
+                "No existing transactions that fit your query.\
+                Please try a different year and/or month. ")
+            return
+
+        self.show_plot(exp_values=all_amounts, 
+            exp_labels=all_tags,
+            u_month=user_month, u_year=user_year)
 
 
     def view_all(self, event):
-        # SQL Query by Year, Month, and Is_Withdraw
-        # Plot results
-        pass
+        ''' Perform SQL Query to view all withdrawals versus deposits during 
+        specified month and year. '''
+        if (len(filters:=self.check_view_filters()) == 0):
+            return
+
+        # Otherwise, unpack filters
+        user_year, user_month = filters
+
+        # debugging, changed sum to count()
+        outputs = conn.execute(''' 
+            SELECT SUM(AMOUNT), IS_WITHDRAW FROM EXPENSES
+            WHERE YEAR == (?) AND MONTH == (?)
+            GROUP BY IS_WITHDRAW ''', (user_year, user_month))
+
+        for i, row in enumerate(outputs):
+            if i == 0:
+                deposits = row[0]
+            elif i == 1:
+                withdrawals = row[0]
+
+        self.show_plot(exp_values=[deposits, withdrawals], 
+            exp_labels=['Deposits', 'Withdrawals'],
+            u_month=user_month, u_year=user_year)
 
 
     def check_txn_input(self, is_deposit_txn):
@@ -335,7 +400,7 @@ class ExpenseTracker:
         self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
         self.curr_balance_text.config(state="disabled")
         # Clear current contents
-        for widget in (self.user_date, self.user_amount):
+        for widget in (self.user_date, self.user_amount, self.year_filter, self.month_filter):
             widget.delete(0, END)
         # Redirect to Main Frame
         self.main_frame.tkraise()
