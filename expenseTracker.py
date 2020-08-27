@@ -74,7 +74,7 @@ class ExpenseTracker:
 
     def init_main_frame(self):
         ''' Initialize Main Frame. '''
-        Label(self.main_frame, text="Main Menu").grid(row=0, columnspan=2)
+        Label(self.main_frame, text="Main Menu").grid(column=1) # changed from columnspan=2
 
         # Show Current Balance
         Label(self.main_frame, text="Current Balance: ").grid(sticky=E)
@@ -114,7 +114,7 @@ class ExpenseTracker:
 
         # Save current session's balance
         with open('curr_balance.pickle', 'wb') as f:
-            pickle.dump(self.curr_balance, f) # hello
+            pickle.dump(self.curr_balance, f)
 
         conn.close()
         self.master.quit()
@@ -122,7 +122,7 @@ class ExpenseTracker:
 
     def init_new_txn_frame(self):
         ''' Initialize New Transaction Frame. '''
-        Label(self.new_txn_frame, text="Add New Transaction").grid(columnspan=2)
+        Label(self.new_txn_frame, text="Add New Transaction").grid(column=1) # changed from columnspan=2
 
         # Amount Label and Entry
         Label(self.new_txn_frame, text="Amount: ").grid(row=1, sticky=E)
@@ -152,29 +152,47 @@ class ExpenseTracker:
 
     def init_withdraw_frame(self):
         ''' Initialize New Frame specifically for Withdrawals. '''
-        Label(self.withdraw_frame, text="Select a Tag: ").grid(row=0, sticky=E)
+        Label(self.withdraw_frame, text="To continue withdrawal, select a Tag.").grid(column=1)
+        Label(self.withdraw_frame, text="Available Tags: ").grid(row=1, sticky=E)
 
         # Associate withdrawal with a Tag
-        tags_listbox = Listbox(self.withdraw_frame, selectmode=BROWSE, height=5)
-        tags = ['Shopping', 'Health', 'Food', 'Rent', 'Other']
+        tags_listbox = Listbox(self.withdraw_frame, selectmode=BROWSE, height=7)
+        tags = ['Shopping', 'Health', 'Food/Drink', 'Bills', 
+            'Travel', 'Entertainment', 'Other']
         for tag in tags:
             tags_listbox.insert(END, tag)
 
         tags_listbox.bind("<<ListboxSelect>>", self.get_tag)
-        tags_listbox.grid(row=0, column=1)
+        tags_listbox.grid(row=1, column=1)
 
 
     def init_history_frame(self):
         ''' Initialize View History Frame. '''
-        Label(self.history_frame, text="View History").grid(row=0, columnspan=2)
-        # TODO
-        # Add Viewer Modes: View Deposits, View Withdrawals (by Date/Tag)
+        Label(self.history_frame, 
+            text="Please specify year and month.").grid(column=1)
+        
+        # Add Viewer Modes
+        Label(self.history_frame, text="Year (YYYY): ").grid(row=1, sticky=E)
+        Label(self.history_frame, text="Month (MM): ").grid(row=2, sticky=E)
+
+        Entry(self.history_frame).grid(row=1, column=1)
+        Entry(self.history_frame).grid(row=2, column=1)
+
+        # TODO: Validate user input from above
+        # Assuming valid for now
+        view_tags_button = Button(self.history_frame, text="View By Tags")
+        #TODO view_button.bind("<Button-1>", self.view_by_tag)
+        view_tags_button.grid(row=3, column=1)
+
+        view_all_button = Button(self.history_frame, 
+            text="View Deposits vs. Withdrawals")
+        #TODO view_all_button.bind("<Button-1>", self.view_by_tag)
+        view_all_button.grid(row=4, column=1)
 
         # Back to Main Menu Button
         back_button = Button(self.history_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=1, column=1)
-        pass
+        back_button.grid(row=5, column=1)
 
 
     def check_txn_input(self, is_deposit_txn):
@@ -238,9 +256,6 @@ class ExpenseTracker:
         self.results_tuple = self.check_txn_input(is_deposit_txn=True)
         if len(self.results_tuple) > 0:
             # Insert new deposit entry into database
-            
-            # https://pythonprogramming.net/sqlite-part-2-dynamically-inserting-database-timestamps/
-
             conn.execute(''' INSERT INTO EXPENSES 
                 (MONTH, DAY, YEAR, AMOUNT) \
                 VALUES (?, ?, ?, ?)''', self.results_tuple)
@@ -248,7 +263,7 @@ class ExpenseTracker:
             print('inserted new record as deposit')
 
             # Redirect to Main Menu
-            deposit_val = format(float(self.user_amount.get()), '.2f')
+            deposit_val = format(self.results_tuple[3], '.2f')
 
             messagebox.showinfo('Successful Transaction',
                 'Deposit of $%s completed.\nReturning to Main Menu.'
@@ -284,12 +299,13 @@ class ExpenseTracker:
             # Insert new record as withdrawal
             
             print('GET TAG():: ', self.results_tuple)
-            month, day, year, new_val = self.results_tuple
+            month, day, year, amount = self.results_tuple
+            
             conn.execute(''' INSERT INTO EXPENSES 
                (MONTH, DAY, YEAR, AMOUNT, IS_WITHDRAW, TAG) \
-               VALUES (?, ?, ?, ?, 1, ?)''', (month, day, year, new_val, tag_value))
+               VALUES (?, ?, ?, ?, 1, ?)''', (month, day, year, amount, tag_value))
 
-            withdraw_val = format(float(self.user_amount.get()), '.2f')
+            withdraw_val = format(amount, '.2f')
             messagebox.showinfo('Successful Transaction',
                 'Withdrawal of $%s for %s completed.\nReturning to Main Menu.' 
                 % (withdraw_val, tag_value))
