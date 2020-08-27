@@ -4,12 +4,23 @@ from tkinter import messagebox
 
 import sqlite3 as sqlite
 
+
+'''
+# My TODO List
+
+[] Insert Transaction Records into Database
+[] Work on View History
+    [] Add View Deposits/Withdrawals Button
+        [] Use SQL Queries: View By ... Month, Year, or Tag
+        [] Use matlabplot to Plot Graphs 
+'''
+
 conn = sqlite.connect('all_expenses.db')
 
 class ExpenseTracker:
     
     def __init__(self, master):
-        ''' Initialize ExpenseTracker and open its database (TODO).'''
+        ''' Initialize ExpenseTracker and open its database. '''
         self.master = master
         self.curr_balance = 0.0
 
@@ -50,9 +61,7 @@ class ExpenseTracker:
         except:
             print('already created database')
             pass
-        #finally:
-        #    print('closing database now.')
-        #    conn.close()
+
 
     def init_main_frame(self):
         ''' Initialize Main Frame. '''
@@ -126,7 +135,7 @@ class ExpenseTracker:
         Label(self.withdraw_frame, text="Select a Tag: ").grid(row=0, sticky=E)
 
         # Associate withdrawal with a Tag
-        tags_listbox = Listbox(self.withdraw_frame)
+        tags_listbox = Listbox(self.withdraw_frame, selectmode=BROWSE, height=5)
         tags = ['Shopping', 'Health', 'Food', 'Rent', 'Other']
         for tag in tags:
             tags_listbox.insert(END, tag)
@@ -206,8 +215,12 @@ class ExpenseTracker:
     def deposit_money(self, event):
         if (self.check_txn_input(is_deposit_txn=True)):
             # Redirect to Main Menu
+            deposit_val = format(float(self.user_amount.get()), '.2f')
+
             messagebox.showinfo('Successful Transaction',
-                'Deposit completed.\nReturning to Main Menu.')
+                'Deposit of $%s completed.\nReturning to Main Menu.'
+                % deposit_val)
+
             self.return_to_main(event="<Buttton-1>")
         else:
             # Remain on current Frame
@@ -227,12 +240,17 @@ class ExpenseTracker:
         if (result_tuple:=widget.curselection()):
             idx = int(result_tuple[0])
             tag_value = widget.get(idx)
+
+            withdraw_val = format(float(self.user_amount.get()), '.2f')
             messagebox.showinfo('Successful Transaction',
-                'Withdrawal for %s completed.\nReturning to Main Menu.' % tag_value)
+                'Withdrawal of $%s for %s completed.\nReturning to Main Menu.' 
+                % (withdraw_val, tag_value))
+
             self.return_to_main(event="<Buttton-1>")
 
 
     def view_history(self, event):
+        # TODO
         self.history_frame.tkraise()
         pass
 
