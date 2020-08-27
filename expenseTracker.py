@@ -8,14 +8,17 @@ import sqlite3 as sqlite
 '''
 # My TODO List
 
-[] Insert Transaction Records into Database
+[x] Insert Transaction Records into Database
+    [] Update self.curr_balance if DB created previously!!!
+    // Defaults to 0.00 when program starts
 [] Work on View History
     [] Add View Deposits/Withdrawals Button
         [] Use SQL Queries: View By ... Month, Year, or Tag
-        [] Use matlabplot to Plot Graphs 
+        [] Use matlabplot to Plot Graphs
 '''
 
-conn = sqlite.connect('all_expenses.db')
+# Global variable
+conn = sqlite.connect('expenses.db')
 
 class ExpenseTracker:
     
@@ -23,6 +26,7 @@ class ExpenseTracker:
         ''' Initialize ExpenseTracker and open its database. '''
         self.master = master
         self.curr_balance = 0.0
+        self.results_tuple = () # Stores user input if valid
 
         # Initialize all frames
         self.main_frame = Frame(master)
@@ -47,19 +51,18 @@ class ExpenseTracker:
 
     def init_db(self):
         ''' Creates a new database if it DNE. '''
-        #conn = sqlite.connect('all_expenses.db')
         try:
-            conn.create(''' CREATE TABLE EXPENSES
+            conn.execute(''' CREATE TABLE EXPENSES
                     (TID INTEGER PRIMARY KEY,
                     MONTH INTEGER NOT NULL,
                     DAY INTEGER NOT NULL,
                     YEAR INTEGER NOT NULL,
-                    CURR_BALANCE REAL NOT NULL,
+                    NEW_BALANCE REAL NOT NULL,
                     IS_WITHDRAW INTEGER DEFAULT 0,
                     TAG CHAR(30));
                     ''')
-        except:
-            print('already created database')
+        except Exception as e:
+            print('Exception: ', e)
             pass
 
 
@@ -96,6 +99,13 @@ class ExpenseTracker:
 
     def custom_quit(self, event):
         conn.commit()
+
+        # ------- DEBUGGING PURPOSES ---------
+        cursor = conn.execute(''' SELECT * FROM EXPENSES''')
+        for i, row in enumerate(cursor):
+            print("Record ", i, " has ", row)
+        # ------- DEBUGGING PURPOSES ---------
+
         conn.close()
         self.master.quit() # ADDED
 
@@ -195,7 +205,9 @@ class ExpenseTracker:
                 
                 # Successful New Transaction (Deposit/Withdraw)
                 self.curr_balance = pending_total
-                return True
+
+                # Return a tuple of user input
+                return (month, day, year, self.curr_balance)
 
             except:
                 messagebox.showerror("Input Error", 
@@ -206,14 +218,25 @@ class ExpenseTracker:
             messagebox.showerror("Input Error", "Please enter a valid amount.")
 
         # Indicate Failure
-        return False
+        return ()
 
     def add_new_txn(self, event):
         self.new_txn_frame.tkraise()
 
 
     def deposit_money(self, event):
-        if (self.check_txn_input(is_deposit_txn=True)):
+        self.results_tuple = self.check_txn_input(is_deposit_txn=True)
+        if len(self.results_tuple) > 0:
+            # Insert new deposit entry into database
+            
+            # https://pythonprogramming.net/sqlite-part-2-dynamically-inserting-database-timestamps/
+
+            conn.execute(''' INSERT INTO EXPENSES 
+                (MONTH, DAY, YEAR, NEW_BALANCE) \
+                VALUES (?, ?, ?, ?)''', self.results_tuple)
+
+            print('inserted new record as deposit')
+
             # Redirect to Main Menu
             deposit_val = format(float(self.user_amount.get()), '.2f')
 
@@ -222,24 +245,39 @@ class ExpenseTracker:
                 % deposit_val)
 
             self.return_to_main(event="<Buttton-1>")
-        else:
+        else: 
+            # results_tuple is empty tuple meaning invalid user input
             # Remain on current Frame
             pass
 
 
     def withdraw_money(self, event):
-        if (self.check_txn_input(is_deposit_txn=False)):
+        self.results_tuple = self.check_txn_input(is_deposit_txn=False)
+        if len(self.results_tuple) > 0:
+            # Valid input received as results
+            print(self.results_tuple)
             self.withdraw_frame.tkraise()
         else:
+            # results_tuple is empty tuple meaning invalid user input
             # Remain on current Frame
+            self.results_tuple = () # empty tuple
             pass
 
 
     def get_tag(self, event):
         widget = event.widget
-        if (result_tuple:=widget.curselection()):
-            idx = int(result_tuple[0])
+        if (selections:=widget.curselection()):
+            # Get corresponding Tag
+            idx = int(selections[0])
             tag_value = widget.get(idx)
+
+            # Insert new record as withdrawal
+            
+            print('GET TAG():: ', self.results_tuple)
+            month, day, year, new_val = self.results_tuple
+            conn.execute(''' INSERT INTO EXPENSES 
+               (MONTH, DAY, YEAR, NEW_BALANCE, IS_WITHDRAW, TAG) \
+               VALUES (?, ?, ?, ?, 1, ?)''', (month, day, year, new_val, tag_value))
 
             withdraw_val = format(float(self.user_amount.get()), '.2f')
             messagebox.showinfo('Successful Transaction',
