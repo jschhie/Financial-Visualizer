@@ -170,28 +170,52 @@ class ExpenseTracker:
         Label(self.history_frame, 
             text="Please specify year and month.").grid(column=1)
         
-        # Add Viewer Modes
+        # Add Filter Modes (Year and Month)
         Label(self.history_frame, text="Year (YYYY): ").grid(row=1, sticky=E)
         Label(self.history_frame, text="Month (MM): ").grid(row=2, sticky=E)
 
-        Entry(self.history_frame).grid(row=1, column=1)
-        Entry(self.history_frame).grid(row=2, column=1)
+        self.year_filter = Entry(self.history_frame)
+        self.year_filter.grid(row=1, column=1)
+        self.month_filter = Entry(self.history_frame)
+        self.month_filter.grid(row=2, column=1)
 
         # TODO: Validate user input from above
         # Assuming valid for now
+
         view_tags_button = Button(self.history_frame, text="View By Tags")
-        #TODO view_button.bind("<Button-1>", self.view_by_tag)
+        view_tags_button.bind("<Button-1>", self.view_by_tag)
         view_tags_button.grid(row=3, column=1)
 
         view_all_button = Button(self.history_frame, 
             text="View Deposits vs. Withdrawals")
-        #TODO view_all_button.bind("<Button-1>", self.view_by_tag)
+        view_all_button.bind("<Button-1>", self.view_all)
         view_all_button.grid(row=4, column=1)
 
         # Back to Main Menu Button
         back_button = Button(self.history_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
         back_button.grid(row=5, column=1)
+
+
+    def view_by_tag(self, event):
+        # SQL Query by Year, Month, and Tag
+        outputs = conn.execute(''' 
+            SELECT SUM(AMOUNT), TAG FROM EXPENSES
+            WHERE YEAR == (?) AND MONTH == (?) AND IS_WITHDRAW == 1
+            GROUP BY TAG ''', 
+            (int(self.year_filter.get()), int(self.month_filter.get())))
+
+        for row in outputs:
+            print("ROW DATA: ", row)
+
+        # Plot results
+        pass
+
+
+    def view_all(self, event):
+        # SQL Query by Year, Month, and Is_Withdraw
+        # Plot results
+        pass
 
 
     def check_txn_input(self, is_deposit_txn):
