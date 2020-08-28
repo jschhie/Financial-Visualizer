@@ -11,7 +11,7 @@ An interactive GUI that helps track, categorize, and visualize all transactions 
 - Allows users to cancel a transcation and return to the Main Menu at any time
 - Total balance reflects the changes made during all of the user's sessions
 
-## Requirements
+## Program Requirements
 This Python program simply requires the user to install ```matplotlib``` (and ```python```!). They can the run the program as-is.
 
 ## Visual Demo
@@ -19,6 +19,7 @@ The following results are based on the supplied ```curr_balance.pickle``` file a
 
 To better understand the outputs, please read the section below. 
 
+### Sample Resources in Detail
 #### Table I: Snippet of Records 
 | TID | Month | Day | Year | Amount | Is_Withdraw | Tag |
 | :---: | :---: | :---: | :---:| :---: | :---: | :---:|
