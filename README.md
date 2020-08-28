@@ -9,7 +9,7 @@ An interactive GUI that helps track, categorize, and visualize all transactions 
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
   * [Remark on Sample Resources](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail)
-  * [Sample Walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough)
+  * [Examples](https://github.com/jschhie/expenseTracker/#examples)
 * [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
 
 ## Features
@@ -25,7 +25,7 @@ This Python program simply requires the user to install ```matplotlib``` (and ``
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
 
-To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the sample [walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough).
+To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the  [examples](https://github.com/jschhie/expenseTracker/#examples).
 
 ### Sample Resources in Detail
 #### Table I: Snippet of Records 
@@ -42,11 +42,17 @@ Each record represents a successful transaction and is identified by a Transacti
 
 In particular, the *Is_Withdrawal* field stores a boolean, which indicates if the *amount* was deposited or withdrawn on the specified date. The last field, *Tag*, pertains to money withdrawals only. By default, the latter two fields will be set to False/None for all deposits, respectively.
 
-> The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
-> Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For example, if *k*=12, the respective record was committed on the 12th month--namely, December.
+The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
 
-### Walkthrough
-todo
+Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For example, if *k*=12, the respective record was committed on the 12th month--namely, December.
+
+### Examples
+| User Request | Program Output | Notes |
+| :---: | :---: | :---: |
+| None | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/main-menu.png" width="350" height="350"> | (Initial Program State) |
+| New Transaction | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/make_new_txn_page.png" width="350" height="350"> | Choose to deposit/withdraw amount |
+| Withdrawal | todo | Associate transaction with a Tag |
+
 
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
