@@ -25,7 +25,7 @@ This Python program simply requires the user to install ```matplotlib``` (and ``
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
 
-To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the sample [walkthrough](https://github.com/jschhie/expenseTracker/#sample-walkthrough).
+To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the sample [walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough).
 
 ### Sample Resources in Detail
 #### Table I: Snippet of Records 
@@ -45,7 +45,7 @@ In particular, the *Is_Withdraw* field stores a boolean, which indicates if the 
 > The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
 > Lastly, *Month* is a digit, in which *k* correponds to the *k*th calendar month.
 
-### Sample Walkthrough
+### Walkthrough
 todo
 
 ## Acknowledgments
