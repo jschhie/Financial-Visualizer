@@ -24,6 +24,7 @@ To better understand the outputs, please read the section below.
 | 1 | 1 | 1 | 2002 | 1.11 | 0 | None |
 | 2 | 1 | 15 | 2002 | 12.99 | 1 | 'Food/Drink' |
 | 3 | 1	| 31 | 2002	| 31.00 | 1	| 'Bills' | 
+| ... | ...	| ... | ...	| ... | ...	| ... | 
 
 Table I is a snippet of the ```sample_records.csv``` (See the /updated_demos/ directory for the full list of records).
 
