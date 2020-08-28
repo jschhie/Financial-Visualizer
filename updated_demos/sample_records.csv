@@ -1,4 +1,4 @@
-TID, Month, Day, Year, Amount, Is_Withdraw, Tag
+TID, Month, Day, Year, Amount, Is_Withdrawal, Tag
 1, 1, 1, 2002, 1.11, 0, None
 2, 1, 15, 2002, 12.99, 1, 'Food/Drink'
 3, 1, 31, 2002, 31.0, 1, 'Bills'
