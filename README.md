@@ -11,7 +11,7 @@ An interactive GUI that helps track, categorize, and visualize all transactions 
 - Allows users to cancel a transcation and return to the Main Menu at any time
 
 ## Requirements
-This Python program requires the user to install ```matplotlib``` (and ```python```!). They can the run the program as-is.
+This Python program simply requires the user to install ```matplotlib``` (and ```python```!). They can the run the program as-is.
 
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
