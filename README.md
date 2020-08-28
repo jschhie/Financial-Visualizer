@@ -1,8 +1,8 @@
-# Personal Expenses Tracker GUI
+# Personal Finance Tracker GUI
 > Created in Summer (August) 2020. Written in Python.
 
 ## Project Overview
-An interactive GUI that helps track, categorize, and visualize all transactions (i.e., withdrawals/deposits).
+An interactive GUI that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
 ## Table of Contents
 * [Features](https://github.com/jschhie/expenseTracker/#features)
