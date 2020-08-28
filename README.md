@@ -9,6 +9,7 @@ An interactive GUI that helps track, categorize, and visualize all transactions 
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
   * [Remark on Sample Resources](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail)
+  * [Sample Walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough)
 * [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
 
 ## Features
@@ -24,7 +25,7 @@ This Python program simply requires the user to install ```matplotlib``` (and ``
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
 
-To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail).
+To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the sample [walkthrough](https://github.com/jschhie/expenseTracker/#sample-walkthrough).
 
 ### Sample Resources in Detail
 #### Table I: Snippet of Records 
@@ -44,7 +45,8 @@ In particular, the *Is_Withdraw* field stores a boolean, which indicates if the 
 > The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
 > Lastly, *Month* is a digit, in which *k* correponds to the *k*th calendar month.
 
-# TODO: Add demos here
+### Sample Walkthrough
+todo
 
 ## Acknowledgments
 This was an independent project. All visual demos and sample resources (such as the database instance) were also created by myself. While writing the source code, I relied on various online tutorials, documentations, and examples. Through this project, I learned about and applied the modules above for the first time. 
