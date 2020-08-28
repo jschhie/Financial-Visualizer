@@ -9,7 +9,7 @@ An interactive GUI that helps track, categorize, and visualize all transactions 
 - Database stores transaction records and retrieves relevant records through ```sqlite3``` queries
   - Avoids SQL injection and exceptions at runtime by ensuring that all user input is valid
 - Allows users to cancel a transcation and return to the Main Menu at any time
-- Total balance reflects the changes made during all user's sessions
+- Total balance reflects the changes made during all of the user's sessions
 
 ## Requirements
 This Python program simply requires the user to install ```matplotlib``` (and ```python```!). They can the run the program as-is.
