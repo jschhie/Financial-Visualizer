@@ -1,4 +1,4 @@
-# Personal Expenses Tracker
+# Personal Expenses Tracker GUI
 > Created in Fall 2020. Written in Python.
 
 ## Project Overview
