@@ -61,7 +61,7 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 
 > REMARKS: 
 
-> Again, Table II results are based on the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
+> Again, Table II's entries reflect the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
 
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
