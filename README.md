@@ -49,11 +49,14 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 ### Examples
 | User Request | Program Output | Notes |
 | :---: | :---: | :---: |
-| None | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/main-menu.png" width="350" height="350"> | (Initial Program State) |
-| New Transaction | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/make_new_txn_page.png" width="350" height="350"> | Choose to deposit/withdraw amount |
-| Deposit | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/successful_deposit.png" width="300" height="180"> | Program will notify user of successful deposit/withdrawal | 
-| Continue with Withdrawal | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/choose_tag.png" width="350" height="350"> | Associate transaction with a Tag |
-| View History | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/view_history_page.png" width="350" height="350"> | Choose viewing mode |
+| [0] None | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/main-menu.png" width="350" height="350"> | (Initial Program State) |
+| [1] New Transaction | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/make_new_txn_page.png" width="350" height="350"> | Choose to deposit/withdraw amount |
+| [1.A] Deposit | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/successful_deposit.png" width="300" height="180"> | Program will notify user of successful deposit/withdrawal | 
+| [1.B] Continue with Withdrawal | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/choose_tag.png" width="350" height="350"> | Associate transaction with a Tag |
+| [2] View History | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/view_history_page.png" width="350" height="350"> | Choose viewing mode |
+| [2.A] | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_all_txns.png" width="350" height="350"> | View all deposits vs. withdrawals for given month and year |  
+| [2.B] | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_by_tags.png" width="350" height="350"> | View all withdrawals by tag for given month and year | 
+| [3] | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/updated_balance.png" width="350" height="350"> | (Sample) Database reflects all changes made | 
 
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
