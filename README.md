@@ -66,4 +66,4 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
 
-Through this project, I learned about and applied the modules above for the first time. 
+From creating this project, I learned about ```tkinter```, ```sqlite3```, and ```matplotlib``` modules and applied them for the first time. 
