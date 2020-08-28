@@ -4,6 +4,13 @@
 ## Project Overview
 An interactive GUI that helps track, categorize, and visualize all transactions (i.e., withdrawals/deposits).
 
+## Table of Contents
+* [Features](https://github.com/jschhie/expenseTracker/#features)
+* [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
+* [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
+  * [Remark on Sample Resources](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail)
+* [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
+
 ## Features
 - GUI and visual graphs are supported by the ```tkinter``` and ```matplotlib``` modules
 - Database stores transaction records and retrieves relevant records through ```sqlite3``` queries
@@ -17,7 +24,7 @@ This Python program simply requires the user to install ```matplotlib``` (and ``
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
 
-To better understand the outputs, please read the section below. 
+To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail).
 
 ### Sample Resources in Detail
 #### Table I: Snippet of Records 
