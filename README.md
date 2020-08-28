@@ -13,7 +13,7 @@ An interactive GUI that helps track and visualize all transactions (i.e., withdr
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
 
-The Table below is a snippet of the ```sample_records.csv``` (Please see the ```updated_demos``` directory for the full list of records). 
+The Table below is a snippet of the ```sample_records.csv``` (Please see the /updated_demos/ directory for the full list of records). 
 
 Each record represents a successful transaction and is identified by a Transaction ID, or *TID*. 
 
