@@ -59,7 +59,9 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 | [2.B] ```View by Tags```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_by_tags.png" width="350" height="350"> | In this case, view report for January 2002, by tags | 
 | [3] ```Revisit Main Menu Page```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/updated_balance.png" width="350" height="350"> | (Sample) Database reflects all changes made | 
 
-> REMARK: Again, Table II results are based on the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the /updated_demos/ for all the generated error messages.
+> REMARKS: 
+
+> Again, Table II results are based on the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the /updated_demos/ for all the generated error messages.
 
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
