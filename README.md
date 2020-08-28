@@ -7,6 +7,7 @@ An interactive GUI that helps track and visualize all transactions (i.e., withdr
 ## Features
 - GUI and visual graphs are supported by Tkinter and matlibplot modules, respectively
 - Database stores transaction records and retrieves relevant records through SQLite3 queries
+  - Avoids SQL injection and exceptions at runtime by ensuring that all user input is valid
 - Allows users to cancel a transcation and return to the Main Menu at any time
 
 ## Visual Demo
