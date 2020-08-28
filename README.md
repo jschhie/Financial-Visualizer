@@ -36,7 +36,7 @@ To better understand the outputs, please read the [next section](https://github.
 | 3 | 1	| 31 | 2002	| 31.00 | 1	| 'Bills' | 
 | ... | ...	| ... | ...	| ... | ...	| ... | 
 
-Table I is a snippet of the ```sample_records.csv``` (See the [/updated_demos/](https://github.com/jschhie/expenseTracker/#updated_demos) directory for the full list of records).
+Table I is a snippet of the ```sample_records.csv``` (See the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) directory for the full list of records).
 
 Each record represents a successful transaction and is identified by a Transaction ID, or *TID*. 
 
@@ -61,7 +61,7 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 
 > REMARKS: 
 
-> Again, Table II results are based on the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the [/updated_demos/](https://github.com/jschhie/expenseTracker/#updated_demos) for all the generated error messages.
+> Again, Table II results are based on the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
 
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
