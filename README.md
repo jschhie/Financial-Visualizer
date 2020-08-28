@@ -2,7 +2,7 @@
 > Created in August 2020. Written in Python.
 
 ## Project Overview
-An interactive GUI that helps track and visualize all transactions (i.e., withdrawals/deposits).
+An interactive GUI that helps track, categorize, and visualize all transactions (i.e., withdrawals/deposits).
 
 ## Features
 - GUI and visual graphs are supported by the Tkinter and matplotlib modules
