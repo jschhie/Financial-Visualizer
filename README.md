@@ -49,6 +49,8 @@ In particular, the *Is_Withdrawal* field stores a boolean, which indicates if th
 todo
 
 ## Acknowledgments
-This was an independent project. All visual demos and sample resources (such as the database instance) were also created by myself. While writing the source code, I relied on various online tutorials, documentations, and examples. Through this project, I learned about and applied the modules above for the first time. 
+This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
+
+Through this project, I learned about and applied the modules above for the first time. 
 
 This README is in progress!
