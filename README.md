@@ -23,7 +23,7 @@ The last field, *Tag*, pertains to money withdrawals only. By default, the latte
 | :---: | :---: | :---: | :---:| :---: | :---: | :---:|
 | 1 | 1 | 1 | 2002 | 1.11 | 0 | None |
 | 2 | 1 | 15 | 2002 | 12.99 | 1 | 'Food/Drink' |
-|3 | 1	| 31 | 2002	| 31.0 |1	| 'Bills' | 
+| 3 | 1	| 31 | 2002	| 31.00 | 1	| 'Bills' | 
 
 > Notes: 
 > The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
