@@ -9,7 +9,7 @@ An interactive GUI that helps track, categorize, and visualize all transactions 
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
   * [Remark on Sample Resources](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail)
-  * [Examples](https://github.com/jschhie/expenseTracker/#examples)
+  * [Brief Walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough)
 * [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
 
 ## Features
@@ -25,10 +25,10 @@ This Python program simply requires the user to install ```matplotlib``` (and ``
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
 
-To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the  [examples](https://github.com/jschhie/expenseTracker/#examples).
+To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the  [walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough).
 
 ### Sample Resources in Detail
-#### Table I: Snippet of Records 
+#### Table I
 | TID | Month | Day | Year | Amount | Is_Withdrawal | Tag |
 | :---: | :---: | :---: | :---:| :---: | :---: | :---:|
 | 1 | 1 | 1 | 2002 | 1.11 | 0 | None |
@@ -46,7 +46,8 @@ The current implementation has six available tags as follows: 'Shopping', 'Healt
 
 Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For example, if *k*=12, the respective record was committed on the 12th month--namely, December.
 
-### Examples
+### Walkthrough
+#### Table II
 | User Request | Program Output | Notes |
 | :---: | :---: | :---: |
 | [0] ```None``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/main-menu.png" width="350" height="350"> | (Initial Program State) |
@@ -57,6 +58,8 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 | [2.A] ```View deposits vs. withdrawals```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_all_txns.png" width="350" height="350"> | In this case, view report for January 2002 |  
 | [2.B] ```View by Tags```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_by_tags.png" width="350" height="350"> | In this case, view report for January 2002, by tags | 
 | [3] ```Revisit Main Menu Page```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/updated_balance.png" width="350" height="350"> | (Sample) Database reflects all changes made | 
+
+> REMARK: Again, Table II results are based on the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the /updated_demos/ for all the generated error messages.
 
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
