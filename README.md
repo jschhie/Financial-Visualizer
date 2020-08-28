@@ -33,7 +33,6 @@ Each record represents a successful transaction and is identified by a Transacti
 
 In particular, the *Is_Withdraw* field stores a boolean, which indicates if the *amount* was deposited or withdrawn on the specified date. The last field, *Tag*, pertains to money withdrawals only. By default, the latter two fields will be set to False/None for all deposits, respectively.
 
-> Notes: 
 > The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
 > Lastly, *Month* is a digit, in which *k* correponds to the *k*th calendar month.
 
