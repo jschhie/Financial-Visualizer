@@ -28,7 +28,7 @@ The following results are based on the supplied ```curr_balance.pickle``` file a
 To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the  [walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough).
 
 ### Sample Resources in Detail
-#### Table I
+#### Table I: Snippet of DB Records
 | TID | Month | Day | Year | Amount | Is_Withdrawal | Tag |
 | :---: | :---: | :---: | :---:| :---: | :---: | :---:|
 | 1 | 1 | 1 | 2002 | 1.11 | 0 | None |
@@ -47,8 +47,8 @@ The current implementation has six available tags as follows: 'Shopping', 'Healt
 Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For example, if *k*=12, the respective record was committed on the 12th month--namely, December.
 
 ### Walkthrough
-#### Table II
-| User Request | Program Output | Notes |
+#### Table II: Sample User Requests & Program Responses
+| User Request | Program Response | Key Notes |
 | :---: | :---: | :---: |
 | [0] ```None``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/main-menu.png" width="350" height="350"> | (Initial Program State) |
 | [1] ```New Transaction``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/make_new_txn_page.png" width="350" height="350"> | Choose to deposit/withdraw amount |
