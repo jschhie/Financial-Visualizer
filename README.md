@@ -51,8 +51,8 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 | :---: | :---: | :---: |
 | None | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/main-menu.png" width="350" height="350"> | (Initial Program State) |
 | New Transaction | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/make_new_txn_page.png" width="350" height="350"> | Choose to deposit/withdraw amount |
-| Deposit | todo | Program notifies user of successful deposit | 
-| Withdrawal | todo | Associate transaction with a Tag |
+| Deposit | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/successful_deposit.png" width="300" height="180"> | Program will notify user of successful deposit/withdrawal | 
+| Continue with Withdrawal | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/choose_tag.png" width="350" height="350"> | Associate transaction with a Tag |
 | View History | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/view_history_page.png" width="350" height="350"> | Choose viewing mode |
 
 ## Acknowledgments
