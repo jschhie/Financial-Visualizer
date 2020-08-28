@@ -2,7 +2,7 @@
 > Created in Summer (August) 2020. Written in Python.
 
 ## Project Overview
-An interactive graphical user interface (GUI) that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
+A graphical user interface (GUI) that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
 ## Table of Contents
 * [Features](https://github.com/jschhie/expenseTracker/#features)
