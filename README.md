@@ -67,5 +67,3 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
 
 Through this project, I learned about and applied the modules above for the first time. 
-
-This README is in progress!
