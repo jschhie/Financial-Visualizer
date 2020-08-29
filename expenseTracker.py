@@ -5,6 +5,7 @@ from tkinter import messagebox
 import sqlite3 as sqlite
 import pickle
 import matplotlib.pyplot as plt
+import numpy as np
 
 conn = sqlite.connect('expenses.db')
 
@@ -240,11 +241,10 @@ class ExpenseTracker:
             GROUP BY MONTH, IS_WITHDRAW ''', (user_year, )) # Make sure to have extra comma for tuple!
 
         # Special case: Not all months will have both types of transactions
-            ## Example: 
+        # Example: 
             ## January and March had exclusively deposits while
             ## User did not commit anything during October and December
         # So, initialize total_deposits and total_withdrawals to 0.0 per month
-        
         total_months = 12
         total_deposits = [0.0] * total_months
         total_withdrawals = [0.0] * total_months
@@ -266,11 +266,45 @@ class ExpenseTracker:
                 Please try a different year. ")
             return
 
-        # -------- DEBUGGING PURPOSES --------
-        for i in range(1, total_months + 1):
-            print('total deposits in ', digit_month_map[i], ': + $', total_deposits[i - 1])
-            print('total withdrawals in ', digit_month_map[i], ': - $', total_withdrawals[i - 1])
-        # -------- DEBUGGING PURPOSES --------
+        # Otherwise, plot grouped bar chart
+        self.show_bar_chart(total_deposits, total_withdrawals, user_year)
+
+
+    def show_bar_chart(self, total_deposits, total_withdrawals, user_year):
+        # NOTE: The following code is based on a tutorial online
+        
+        bar_width = 0.25
+        # Set position of bar on X axis
+        r1 = np.arange(len(total_deposits))
+        r2 = [x + bar_width for x in r1]
+
+        # Make plot
+        rects1 = plt.bar(r1, total_deposits, width=bar_width, 
+            edgecolor='white', label='Total Deposits')
+        
+        rects2 = plt.bar(r2, total_withdrawals, width=bar_width, 
+            edgecolor='white', label='Total Withdrawals')
+
+        # Add xticks and label each group by correct month name
+        plt.xlabel('Month')
+        plt.ylabel('Transactions Amount ($)')
+        plt.title('Expenses Report for %d: Transactions Grouped by Month' % user_year)
+        plt.xticks([r + bar_width for r in range(len(total_deposits))], 
+            list((digit_month_map).values()))
+
+        def autolabel(rects):
+            for rect in rects:
+                height = rect.get_height()
+                plt.text(rect.get_x() + rect.get_width()/2., 1.0*height,
+                '%d' % int(height),
+                ha='center', va='bottom')
+
+        autolabel(rects1)
+        autolabel(rects2)
+
+        # Create legend and show bar graphs
+        plt.legend()
+        plt.show()
 
 
     def view_by_tag(self, event):
