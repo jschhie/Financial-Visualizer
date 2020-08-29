@@ -155,7 +155,7 @@ class ExpenseTracker:
     def init_history_frame(self):
         ''' Initialize View History Frame. '''
         Label(self.history_frame, 
-            text="Please specify year and month.").grid(column=1)
+            text="Please specify year and month, if applicable.").grid(column=1)
         
         # Add Filter Modes (Year and Month)
         Label(self.history_frame, text="Year (YYYY): ").grid(row=1, sticky=E)
@@ -166,9 +166,6 @@ class ExpenseTracker:
         self.month_filter = Entry(self.history_frame)
         self.month_filter.grid(row=2, column=1)
 
-        # TODO: Validate user input from above
-        # Assuming valid for now
-
         view_tags_button = Button(self.history_frame, text="View By Tags")
         view_tags_button.bind("<Button-1>", self.view_by_tag)
         view_tags_button.grid(row=3, column=1)
@@ -178,22 +175,38 @@ class ExpenseTracker:
         view_all_button.bind("<Button-1>", self.view_all)
         view_all_button.grid(row=4, column=1)
 
+        # New Feature: View By Year (Entry for 'Month' will be ignored)
+        view_by_year_button = Button(self.history_frame,
+            text="View By Year Only")
+        view_by_year_button.bind("<Button-1>", self.view_by_year)
+        view_by_year_button.grid(row=5, column=1)
+
         # Back to Main Menu Button
         back_button = Button(self.history_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=5, column=1)
+        back_button.grid(row=6, column=1)
 
 
-    def check_view_filters(self):
+    def check_view_filters(self, ignore_month=False):
         try:
             in_year = int(self.year_filter.get())
-            in_month = int(self.month_filter.get())
             assert(in_year >= 2000 and in_year <= 2020)
-            assert(in_month >= 1 and in_month <= 12)
-            return (in_year, in_month) # Success
+            
+            # Check if 'View By Year Only' Button selected
+            if (ignore_month == False):
+                in_month = int(self.month_filter.get())
+                assert(in_month >= 1 and in_month <= 12)
+                return (in_year, in_month) # Success
+            else:
+                return (in_year, -1) # Success, but ignore month field
+        
         except:
+            add_str = ""
+            if (ignore_month == False):
+                add_str = " and month"
+            # Conditional print
             messagebox.showerror("Input Error", 
-                "Please provide valid month and year combination.")
+                "Please provide valid year%s." % add_str)
             return () # Failure
 
 
@@ -212,6 +225,52 @@ class ExpenseTracker:
         plt.title('Expenses Report for %s %d' % (digit_month_map[u_month], u_year))
         plt.tight_layout()
         plt.show()
+
+
+    # Helper Function for New Feature
+    def view_by_year(self, event):
+        if (len(filters:=self.check_view_filters(ignore_month=True)) == 0):
+            return
+
+        # Valid Year given, but may or may not be associated with a record
+        user_year, _ = filters
+        outputs = conn.execute(''' 
+            SELECT SUM(AMOUNT), MONTH, IS_WITHDRAW FROM EXPENSES
+            WHERE YEAR == (?)
+            GROUP BY MONTH, IS_WITHDRAW ''', (user_year, )) # Make sure to have extra comma for tuple!
+
+        # Special case: Not all months will have both types of transactions
+            ## Example: 
+            ## January and March had exclusively deposits while
+            ## User did not commit anything during October and December
+        # So, initialize total_deposits and total_withdrawals to 0.0 per month
+        
+        total_months = 12
+        total_deposits = [0.0] * total_months
+        total_withdrawals = [0.0] * total_months
+        at_least_one_txn = False
+
+        for row in outputs:
+            at_least_one_txn = True
+            temp_amt = row[0]
+            month_digit = row[1]
+            is_withdrawal_flag = row[2]
+            if is_withdrawal_flag == 1:
+                total_deposits[month_digit - 1] = temp_amt
+            else:
+                total_withdrawals[month_digit - 1] = temp_amt
+
+        if at_least_one_txn == False:
+            messagebox.showerror("Query Failure",
+                "No existing transactions that fit your query.\
+                Please try a different year. ")
+            return
+
+        # -------- DEBUGGING PURPOSES --------
+        for i in range(1, total_months + 1):
+            print('total deposits in ', digit_month_map[i], ': + $', total_deposits[i - 1])
+            print('total withdrawals in ', digit_month_map[i], ': - $', total_withdrawals[i - 1])
+        # -------- DEBUGGING PURPOSES --------
 
 
     def view_by_tag(self, event):
@@ -256,7 +315,6 @@ class ExpenseTracker:
         # Otherwise, unpack filters
         user_year, user_month = filters
 
-        # debugging, changed sum to count()
         outputs = conn.execute(''' 
             SELECT SUM(AMOUNT), IS_WITHDRAW FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?)
