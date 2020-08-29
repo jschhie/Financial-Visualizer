@@ -44,7 +44,7 @@ Table I is a snippet of the ```sample_records.csv``` (See the [/updated_demos/](
 
 Each record represents a successful transaction and is identified by a Transaction ID, or *TID*. 
 
-In particular, the *Is_Withdrawal* field stores a boolean, which indicates if the *amount* was deposited or withdrawn on the specified date. The last field, *Tag*, pertains to money withdrawals only. By default, the latter two fields will be set to False/None for all deposits, respectively.
+In particular, the *Is_Withdrawal* field stores a boolean, which indicates if the *Amount* was deposited or withdrawn on the specified date. The last field, *Tag*, pertains to money withdrawals only. By default, the last two fields will be set to False/None for all deposits, respectively.
 
 The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
 
