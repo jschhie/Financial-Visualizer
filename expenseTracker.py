@@ -1,23 +1,20 @@
-# Personal Expenses Tracker GUI
+# ----- Personal Expenses Tracker GUI -----
 from tkinter import *
 from tkinter import messagebox
 
+from helper_lib import *
+
 import sqlite3 as sqlite
 import pickle
-import matplotlib.pyplot as plt
-import numpy as np
 
+# Connect application to SQLite DB
 conn = sqlite.connect('expenses.db')
-
-digit_month_map = {1: "Jan.", 2: "Feb.", 3: "Mar.", 
-                    4: "Apr.", 5: "May", 6: "Jun.", 
-                    7: "Jul.", 8: "Aug.", 9: "Sep.",
-                    10: "Oct.", 11: "Nov.", 12: "Dec."}
 
 class ExpenseTracker:
     
     def __init__(self, master):
         ''' Initialize ExpenseTracker and open its database. '''
+        
         self.master = master
         self.results_tuple = () # Stores user input if valid
         
@@ -42,9 +39,8 @@ class ExpenseTracker:
         self.init_new_txn_frame()
         self.init_withdraw_frame()
         self.init_history_frame()
-        
-        # Create/Load SQL Database
         self.init_db()
+        
         # Go to Main Menu by default
         self.main_frame.tkraise()
 
@@ -68,6 +64,7 @@ class ExpenseTracker:
 
     def init_main_frame(self):
         ''' Initialize Main Frame. '''
+        
         # Show Main Menu and Current Balance
         Label(self.main_frame, text="Main Menu").grid(column=1)
         Label(self.main_frame, text="Current Balance: ").grid(sticky=E)
@@ -97,11 +94,10 @@ class ExpenseTracker:
 
 
     def custom_quit(self, event):
-        # Save current session's transactions and updated balance
+        ''' Save current session's transactions and updated balance '''
         conn.commit()
         with open('curr_balance.pickle', 'wb') as f:
             pickle.dump(self.curr_balance, f)
-
         conn.close()
         self.master.quit()
 
@@ -138,6 +134,7 @@ class ExpenseTracker:
 
     def init_withdraw_frame(self):
         ''' Initialize New Frame specifically for Withdrawals. '''
+        
         Label(self.withdraw_frame, text="To continue withdrawal, select a Tag.").grid(column=1)
         Label(self.withdraw_frame, text="Available Tags: ").grid(row=1, sticky=E)
 
@@ -155,6 +152,7 @@ class ExpenseTracker:
 
     def init_history_frame(self):
         ''' Initialize View History Frame. '''
+        
         Label(self.history_frame, 
             text="Please specify year and month, if applicable.").grid(column=1)
         
@@ -176,7 +174,6 @@ class ExpenseTracker:
         view_all_button.bind("<Button-1>", self.view_all)
         view_all_button.grid(row=4, column=1)
 
-        # New Feature: View By Year (Entry for 'Month' will be ignored)
         view_by_year_button = Button(self.history_frame,
             text="View By Year Only")
         view_by_year_button.bind("<Button-1>", self.view_by_year)
@@ -188,49 +185,14 @@ class ExpenseTracker:
         back_button.grid(row=6, column=1)
 
 
-    def check_view_filters(self, ignore_month=False):
-        try:
-            in_year = int(self.year_filter.get())
-            assert(in_year >= 2000 and in_year <= 2020)
-            
-            # Check if 'View By Year Only' Button selected
-            if (ignore_month == False):
-                in_month = int(self.month_filter.get())
-                assert(in_month >= 1 and in_month <= 12)
-                return (in_year, in_month) # Success
-            else:
-                return (in_year, -1) # Success, but ignore month field
-        
-        except:
-            add_str = ""
-            if (ignore_month == False):
-                add_str = " and month"
-            # Conditional print
-            messagebox.showerror("Input Error", 
-                "Please provide valid year%s." % add_str)
-            return () # Failure
-
-
-    def show_plot(self, exp_values, exp_labels, u_month, u_year):
-        # Set up pie chart
-        fig, ax = plt.subplots()
-        ax.pie(exp_values, labels=exp_labels, autopct='%1.1f%%', pctdistance=0.85)
-        ax.axis('equal')
-
-        # Draw Donut within Pie
-        center_circle = plt.Circle((0,0), 0.70, fc='white')
-        fig = plt.gcf()
-        fig.gca().add_artist(center_circle)
-
-        # Plot data
-        plt.title('Expenses Report for %s %d' % (digit_month_map[u_month], u_year))
-        plt.tight_layout()
-        plt.show()
-
-
-    # Helper Function for New Feature
     def view_by_year(self, event):
-        if (len(filters:=self.check_view_filters(ignore_month=True)) == 0):
+        ''' Perform SQL Query to view all Transactions within given year. 
+        Group by transaction type (withdrawal/deposits) and month. '''
+        
+        in_year = self.year_filter.get()
+        
+        if (len(filters:=check_view_filters(in_year, ignore_month=True)) == 0):
+            # Invalid user filters
             return
 
         # Valid Year given, but may or may not be associated with a record
@@ -238,7 +200,7 @@ class ExpenseTracker:
         outputs = conn.execute(''' 
             SELECT SUM(AMOUNT), MONTH, IS_WITHDRAW FROM EXPENSES
             WHERE YEAR == (?)
-            GROUP BY MONTH, IS_WITHDRAW ''', (user_year, )) # Make sure to have extra comma for tuple!
+            GROUP BY MONTH, IS_WITHDRAW ''', (user_year, ))
 
         # Special case: Not all months will have both types of transactions
         # Example: 
@@ -267,50 +229,17 @@ class ExpenseTracker:
             return
 
         # Otherwise, plot grouped bar chart
-        self.show_bar_chart(total_deposits, total_withdrawals, user_year)
-
-
-    def show_bar_chart(self, total_deposits, total_withdrawals, user_year):
-        # NOTE: The following code is based on a tutorial online
-        
-        bar_width = 0.25
-        # Set position of bar on X axis
-        r1 = np.arange(len(total_deposits))
-        r2 = [x + bar_width for x in r1]
-
-        # Make plot
-        rects1 = plt.bar(r1, total_deposits, width=bar_width, 
-            edgecolor='white', label='Total Deposits')
-        
-        rects2 = plt.bar(r2, total_withdrawals, width=bar_width, 
-            edgecolor='white', label='Total Withdrawals')
-
-        # Add xticks and label each group by correct month name
-        plt.xlabel('Month')
-        plt.ylabel('Transactions Amount ($)')
-        plt.title('Expenses Report for %d: Transactions Grouped by Month' % user_year)
-        plt.xticks([r + bar_width for r in range(len(total_deposits))], 
-            list((digit_month_map).values()))
-
-        def autolabel(rects):
-            for rect in rects:
-                height = rect.get_height()
-                plt.text(rect.get_x() + rect.get_width()/2., 1.0*height,
-                '%d' % int(height),
-                ha='center', va='bottom')
-
-        autolabel(rects1)
-        autolabel(rects2)
-
-        # Create legend and show bar graphs
-        plt.legend()
-        plt.show()
+        show_bar_chart(total_deposits, total_withdrawals, user_year)
 
 
     def view_by_tag(self, event):
-        ''' Perform SQL Query to view Transactions by Tag for specified year and month. '''
+        ''' Perform SQL Query to view Transactions, 
+        by associated Tag for specified year and month. '''
+        
         # Check for valid numeric inputs
-        if (len(filters:=self.check_view_filters()) == 0):
+        in_year = self.year_filter.get()
+        in_month = self.month_filter.get()
+        if (len(filters:=check_view_filters(in_year, in_month)) == 0):
             return
 
         # Otherwise, unpack filters
@@ -335,15 +264,20 @@ class ExpenseTracker:
                 Please try a different year and/or month. ")
             return
 
-        self.show_plot(exp_values=all_amounts, 
+        show_plot(exp_values=all_amounts, 
             exp_labels=all_tags,
             u_month=user_month, u_year=user_year)
 
 
     def view_all(self, event):
-        ''' Perform SQL Query to view all withdrawals versus deposits during 
-        specified month and year. '''
-        if (len(filters:=self.check_view_filters()) == 0):
+        ''' Perform SQL Query to view all withdrawals versus deposits 
+        during specified month and year. '''
+        
+        in_year = self.year_filter.get()
+        in_month = self.month_filter.get()
+        
+        if (len(filters:=check_view_filters(in_year, in_month)) == 0):
+            # Invalid user filters
             return
 
         # Otherwise, unpack filters
@@ -370,75 +304,42 @@ class ExpenseTracker:
                 Please try a different year and/or month. ")
             return
 
-        self.show_plot(exp_values=[deposits, withdrawals], 
+        show_plot(exp_values=[deposits, withdrawals], 
             exp_labels=['Deposits', 'Withdrawals'],
             u_month=user_month, u_year=user_year)
 
-
-    def check_txn_input(self, is_deposit_txn):
-        ''' Checks for valid amount to deposit/withdraw and valid 
-        date entry in (MM/DD/YYYY) format. '''
-        # Check User Amount first
-        try:
-            pending_total = float(self.curr_balance)
-            pending_change = float(self.user_amount.get())
-
-            # Make sure amount is positive
-            assert(pending_change > 0.0)
-            enough_funds = True
-            if is_deposit_txn:
-                pending_total += pending_change
-            else:
-                # Otherwise, is_withdraw_txn=True
-                if pending_total < pending_change:
-                    enough_funds = False
-                pending_total -= pending_change
-            # Next, check User Dates
-            try:
-                user_date = self.user_date.get()
-                month, day, year = user_date.split('/')
-                for date_input in (month, day, year):
-                    assert(date_input.isnumeric())
-
-                assert(int(month) <= 12 and int(month) > 0)
-                assert(int(day) <= 31 and int(month) > 0)
-                assert(int(year) >= 2000 and int(year) <= 2020)
-
-                # Warn user if any insufficient funds but continue to process txn
-                if (enough_funds == False):
-                    messagebox.showwarning('Insufficient Funds', 
-                        'Amount to withdraw is greater than current balance.')
-                # Successful New Transaction (Deposit/Withdraw)
-                self.curr_balance = pending_total
-                # Return a tuple of user input
-                return (month, day, year, pending_change)
-            except:
-                # Indicate txn failure
-                messagebox.showerror("Input Error", 
-                    "Please use (MM/DD/YYYY) format.\
-                    \nYear should be between 2000 and 2020.")
-        except:
-            # Indicate txn failure
-            messagebox.showerror("Input Error", "Please enter a valid, positive amount.")
-        return () # Empty tuple
-
     
     def add_new_txn(self, event):
+        ''' Redirects to New Transaction Page.'''
         self.new_txn_frame.tkraise()
 
 
     def deposit_money(self, event):
-        self.results_tuple = self.check_txn_input(is_deposit_txn=True)
+        ''' Attempt to deposit requested amount on given date. ''' 
+        
+        # Collect info from user
+        init_total = float(self.curr_balance)
+        pending_change = self.user_amount.get()
+        user_date = self.user_date.get()
+
+        self.results_tuple = check_txn_input(init_total, pending_change, 
+                                            user_date, is_deposit_txn=True)
+        
         if len(self.results_tuple) > 0:
-            # Insert new deposit entry into database
+            # Unpack the results_tuple and update curr_balance
+            self.curr_balance, u_month, u_day, u_year, u_amount = self.results_tuple
+            
+            # Sucessful deposit, so insert new deposit entry into database
             conn.execute(''' INSERT INTO EXPENSES 
                 (MONTH, DAY, YEAR, AMOUNT) \
-                VALUES (?, ?, ?, ?)''', self.results_tuple)
+                VALUES (?, ?, ?, ?)''', (u_month, u_day, u_year, u_amount))
+            
             # Indicate successful deposit
-            deposit_val = format(self.results_tuple[3], '.2f')
+            deposit_val = format(u_amount, '.2f')
             messagebox.showinfo('Successful Transaction',
                 'Deposit of $%s completed.\nReturning to Main Menu.'
                 % deposit_val)
+            
             # Redirect to Main Menu
             self.return_to_main(event="<Buttton-1>")
         else: 
@@ -448,7 +349,16 @@ class ExpenseTracker:
 
 
     def withdraw_money(self, event):
-        self.results_tuple = self.check_txn_input(is_deposit_txn=False)
+        ''' Attempt to withdraw requested amount on given date. '''
+        
+        # Collect info from user
+        init_total = float(self.curr_balance)
+        pending_change = self.user_amount.get()
+        user_date = self.user_date.get()
+        
+        self.results_tuple = check_txn_input(init_total, pending_change, 
+                                        user_date, is_deposit_txn=False)
+        
         if len(self.results_tuple) > 0:
             # Valid input received as results
             self.withdraw_frame.tkraise()
@@ -459,40 +369,48 @@ class ExpenseTracker:
 
 
     def get_tag(self, event):
+        ''' Associates withdrawal transaction with a Tag. '''
         widget = event.widget
         if (selections:=widget.curselection()):
             # Get corresponding Tag
             idx = int(selections[0])
             tag_value = widget.get(idx)
             # Insert new record as withdrawal
-            month, day, year, amount = self.results_tuple
+            self.curr_balance, u_month, u_day, u_year, u_amount = self.results_tuple
+            # Perform SQL Query
             conn.execute(''' INSERT INTO EXPENSES 
                (MONTH, DAY, YEAR, AMOUNT, IS_WITHDRAW, TAG) \
-               VALUES (?, ?, ?, ?, 1, ?)''', (month, day, year, amount, tag_value))
+               VALUES (?, ?, ?, ?, 1, ?)''', (u_month, u_day, u_year, u_amount, tag_value))
             # Indicate successful withdrawal
-            withdraw_val = format(amount, '.2f')
+            withdraw_val = format(u_amount, '.2f')
             messagebox.showinfo('Successful Transaction',
                 'Withdrawal of $%s for %s completed.\nReturning to Main Menu.' 
                 % (withdraw_val, tag_value))
             # Redirect to Main Menu
             self.return_to_main(event="<Buttton-1>")
-            
+        else:
+            # No entry given
+            pass
+
 
     def view_history(self, event):
+        ''' Redirect to View History Page. '''
         self.history_frame.tkraise()
-        pass
 
 
     def return_to_main(self, event):
         ''' Returns to Main Frame. '''
+        
         # Get most up-to-date balance
         self.curr_balance_text.config(state="normal")
         self.curr_balance_text.delete(0, END)
         self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
         self.curr_balance_text.config(state="disabled")
+        
         # Clear current contents
         for widget in (self.user_date, self.user_amount, self.year_filter, self.month_filter):
             widget.delete(0, END)
+        
         # Redirect to Main Frame
         self.main_frame.tkraise()
 
