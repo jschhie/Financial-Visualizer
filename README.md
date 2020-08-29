@@ -57,6 +57,7 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 | [2] ```View History``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/view_history_page.png" width="350" height="350"> | Choose viewing mode |
 | [2.A] ```View deposits vs. withdrawals```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_all_txns.png" width="350" height="350"> | In this case, view report for January 2002 |  
 | [2.B] ```View by Tags```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_by_tags.png" width="350" height="350"> | In this case, view report for January 2002, by tags | 
+| [2.C] ```View by Year Only```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/view_by_year_only.png" width="350" height="350"> | In this case, view report for the year 2002 as a whole (Group by Transaction Type and Month) |
 | [3] ```Revisit Main Menu Page```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/updated_balance.png" width="350" height="350"> | Database reflects all changes made | 
 
 > REMARKS: 
