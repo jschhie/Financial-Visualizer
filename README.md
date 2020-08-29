@@ -22,7 +22,9 @@ A graphical user interface (GUI) that helps track, categorize, and visualize all
 ## Program Requirements
 This Python program simply requires the user to install ```matplotlib``` (and ```python3```!). 
 
-They can the run the program as-is. On Terminal, for example, enter ``` python3 expenseTracker.py ```.
+To run the program on Terminal, for example, enter ``` python3 expenseTracker.py ```.
+
+As-is, the program has been initialized with some sample transactions, which are stored in the database ```expenses.db``` and ```curr_balance.pickle``` file. Alternatively, the user may provide their own input and "reset" the program's state. To do so, they need not download those two aforementioned files. The ExpenseTracker would then be emptied with a balance of $0.00.
 
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
