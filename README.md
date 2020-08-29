@@ -20,7 +20,9 @@ A graphical user interface (GUI) that helps track, categorize, and visualize all
 - Total balance reflects the changes made during all of the user's sessions
 
 ## Program Requirements
-This Python program simply requires the user to install ```matplotlib``` (and ```python```!). They can the run the program as-is.
+This Python program simply requires the user to install ```matplotlib``` (and ```python3```!). 
+
+They can the run the program as-is. On Terminal, for example, enter ``` python3 expenseTracker.py ```.
 
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
