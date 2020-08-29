@@ -359,7 +359,6 @@ class ExpenseTracker:
         self.results_tuple = self.check_txn_input(is_deposit_txn=False)
         if len(self.results_tuple) > 0:
             # Valid input received as results
-            print(self.results_tuple)
             self.withdraw_frame.tkraise()
         else:
             # results_tuple is empty tuple meaning invalid user input
