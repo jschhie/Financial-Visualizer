@@ -23,8 +23,11 @@ This Python program simply requires the user to install ```matplotlib``` (and ``
 
 To run the program on Terminal, for example, enter ``` python3 expenseTracker.py ```.
 
+<details><summary><b>Show Details</b></summary>
+
 As-is, the program has been initialized with some sample transactions, which are stored in the database ```expenses.db``` and ```curr_balance.pickle``` file. Alternatively, the user may provide their own input and "reset" the program's state. To do so, they need not download those two aforementioned files. The ```ExpenseTracker``` would then be emptied with a balance of $0.00.
 
+</details>
 
 ## About the Sample Resources
 ### Table I: Snippet of DB Records
