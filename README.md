@@ -37,7 +37,8 @@ As-is, the program has been initialized with some sample transactions, which are
 
 
 <details><summary><b>Show Table I Details</b></summary>
-Table I is a snippet of the ```sample_records.csv``` (See the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) directory for the full list of records).
+
+Table I is a snippet of the ```sample_records.csv```. See the [updated_demos](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for the full list of records.
 
 Each record represents a successful transaction and is identified by a Transaction ID, or *TID*. 
 
@@ -69,7 +70,7 @@ To better understand the outputs, please read the section [above](https://github
 
 <details><summary><b>Show Table II Details</b></summary>
 
-Again, Table II's entries reflect the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
+Again, Table II's entries reflect the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors. If interested, please see the [updated_demos](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
 
 </details>
 
