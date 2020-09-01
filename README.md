@@ -7,9 +7,8 @@ A graphical user interface (GUI) that helps track, categorize, and visualize all
 ## Table of Contents
 * [Features](https://github.com/jschhie/expenseTracker/#features)
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
+* [About the Sample Resources](https://github.com/jschhie/expenseTracker/#about-the-sample-resources)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
-  * [Remark on Sample Resources](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail)
-  * [Brief Walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough)
 * [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
 
 ## Features
@@ -20,15 +19,18 @@ A graphical user interface (GUI) that helps track, categorize, and visualize all
 - Total balance reflects the changes made during all of the user's sessions
 
 ## Program Requirements
-This Python program simply requires the user to install ```matplotlib``` (and ```python```!). They can the run the program as-is.
+This Python program simply requires the user to install ```matplotlib``` (and ```python3```!). 
 
-## Visual Demo
-The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
+To run the program on Terminal, for example, enter ``` python3 expenseTracker.py ```.
 
-To better understand the outputs, please read the [next section](https://github.com/jschhie/expenseTracker/#sample-resources-in-detail). Or, skip ahead for the  [walkthrough](https://github.com/jschhie/expenseTracker/#walkthrough).
+<details><summary><b>Show Details</b></summary>
 
-### Sample Resources in Detail
-#### Table I: Snippet of DB Records
+As-is, the program has been initialized with some sample transactions, which are stored in the database ```expenses.db``` and ```curr_balance.pickle``` file. Alternatively, the user may provide their own input and "reset" the program's state. To do so, they need not download those two aforementioned files. The ```ExpenseTracker``` would then be emptied with a balance of $0.00.
+
+</details>
+
+## About the Sample Resources
+### Table I: Snippet of DB Records
 | TID | Month | Day | Year | Amount | Is_Withdrawal | Tag |
 | :---: | :---: | :---: | :---:| :---: | :---: | :---:|
 | 1 | 1 | 1 | 2002 | 1.11 | 0 | None |
@@ -36,18 +38,27 @@ To better understand the outputs, please read the [next section](https://github.
 | 3 | 1	| 31 | 2002	| 31.00 | 1	| 'Bills' | 
 | ... | ...	| ... | ...	| ... | ...	| ... | 
 
-Table I is a snippet of the ```sample_records.csv``` (See the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) directory for the full list of records).
+
+<details><summary><b>Show Table I Details</b></summary>
+
+Table I is a snippet of the ```sample_records.csv```. See the [updated_demos](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for the full list of records.
 
 Each record represents a successful transaction and is identified by a Transaction ID, or *TID*. 
 
-In particular, the *Is_Withdrawal* field stores a boolean, which indicates if the *amount* was deposited or withdrawn on the specified date. The last field, *Tag*, pertains to money withdrawals only. By default, the latter two fields will be set to False/None for all deposits, respectively.
+In particular, the *Is_Withdrawal* field stores a boolean, which indicates if the *Amount* was deposited or withdrawn on the specified date. The last field, *Tag*, pertains to money withdrawals only. By default, the last two fields will be set to False/None for all deposits, respectively.
 
 The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
 
 Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For example, if *k*=12, the respective record was committed on the 12th month--namely, December.
 
-### Walkthrough
-#### Table II: Sample User Requests & Program Responses
+</details>
+
+## Visual Demo
+The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
+
+To better understand the outputs, please read the section [above](https://github.com/jschhie/expenseTracker/#about-the-sample-resources).
+
+### Table II: Sample User Requests & Program Responses
 | User Request | Program Response | Key Notes |
 | :---: | :---: | :---: |
 | [0] ```None``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/main-menu.png" width="350" height="350"> | (Initial Program State) |
@@ -60,9 +71,11 @@ Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For
 | [2.C] ```View by Year Only```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/view_by_year_only.png" width="350" height="350"> | Here, view report for Year=2002 as a whole (Group by Transaction Type and Month) |
 | [3] ```Revisit Main Menu Page```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/updated_balance.png" width="350" height="350"> | Database reflects all changes made | 
 
-> REMARKS: 
+<details><summary><b>Show Table II Details</b></summary>
 
-> Again, Table II's entries reflect the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors--if interested, please see the [/updated_demos/](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
+Again, Table II's entries reflect the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors. If interested, please see the [updated_demos](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
+
+</details>
 
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
