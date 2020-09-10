@@ -21,7 +21,7 @@ A graphical user interface (GUI) that helps track, categorize, and visualize all
 ## Program Requirements
 This Python program simply requires the user to install ```matplotlib``` (and ```python3```!). 
 
-To run the program on Terminal, for example, enter ``` python3 expenseTracker.py ```.
+To run the program on Terminal, for example, enter ``` python3 finance_tracker.py ```.
 
 <details><summary><b>Show Details</b></summary>
 
