@@ -5,13 +5,13 @@
 A graphical user interface (GUI) that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
 ## Table of Contents
-* [Features](https://github.com/jschhie/expenseTracker/#features)
+* [Current Features](https://github.com/jschhie/expenseTracker/#current-features)
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
 * [About the Sample Resources](https://github.com/jschhie/expenseTracker/#about-the-sample-resources)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
 * [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
 
-## Features
+## Current Features
 - GUI and visual graphs are supported by the ```tkinter``` and ```matplotlib``` modules
 - Database stores transaction records and retrieves relevant records through ```sqlite3``` queries
   - Avoids SQL injection and exceptions at runtime by ensuring that all user input is valid
