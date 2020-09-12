@@ -29,15 +29,17 @@ class ExpenseTracker:
         self.main_frame = Frame(master)
         self.new_txn_frame = Frame(master)
         self.withdraw_frame = Frame(master)
+        self.visualize_frame = Frame(master)
         self.history_frame = Frame(master)
         
         for f in (self.main_frame, self.new_txn_frame, 
-                self.withdraw_frame, self.history_frame):
+                self.withdraw_frame, self.visualize_frame, self.history_frame):
             f.grid(row=0, column=0, sticky="NEWS")
 
         self.init_main_frame()
         self.init_new_txn_frame()
         self.init_withdraw_frame()
+        self.init_visualize_frame()
         self.init_history_frame()
         self.init_db()
         
@@ -82,15 +84,20 @@ class ExpenseTracker:
         new_txn_button.bind("<Button-1>", self.add_new_txn)
         new_txn_button.grid(row=2, column=1)
 
-        # View History Button
-        view_hist_button = Button(self.main_frame, text="View History")
-        view_hist_button.bind("<Button-1>", self.view_history)
-        view_hist_button.grid(row=3, column=1)
+        # Visualize Transactions Button
+        visualize_button = Button(self.main_frame, text="Visualize Transactions")
+        visualize_button.bind("<Button-1>", self.visualize_txn)
+        visualize_button.grid(row=3, column=1)
         
+        # View History Button
+        view_button = Button(self.main_frame, text="View History")
+        view_button.bind("<Button-1>", self.view_history)
+        view_button.grid(row=4, column=1)
+
         # Quit Button
         quit_button = Button(self.main_frame, text="Save Changes")
         quit_button.bind("<Button-1>", self.custom_quit)
-        quit_button.grid(row=4, column=1)
+        quit_button.grid(row=5, column=1)
 
 
     def custom_quit(self, event):
@@ -150,43 +157,95 @@ class ExpenseTracker:
         tags_listbox.grid(row=1, column=1)
 
 
-    def init_history_frame(self):
-        ''' Initialize View History Frame. '''
+    def init_visualize_frame(self):
+        ''' Initialize Visualize Transactions Frame. '''
         
-        Label(self.history_frame, 
+        Label(self.visualize_frame, 
             text="Please specify year and month, if applicable.").grid(column=1)
         
         # Add Filter Modes (Year and Month)
-        Label(self.history_frame, text="Year (YYYY): ").grid(row=1, sticky=E)
-        Label(self.history_frame, text="Month (MM): ").grid(row=2, sticky=E)
+        Label(self.visualize_frame, text="Year (YYYY): ").grid(row=1, sticky=E)
+        Label(self.visualize_frame, text="Month (MM): ").grid(row=2, sticky=E)
 
-        self.year_filter = Entry(self.history_frame)
+        self.year_filter = Entry(self.visualize_frame)
         self.year_filter.grid(row=1, column=1)
-        self.month_filter = Entry(self.history_frame)
+        self.month_filter = Entry(self.visualize_frame)
         self.month_filter.grid(row=2, column=1)
 
-        view_tags_button = Button(self.history_frame, text="View By Tags")
+        view_tags_button = Button(self.visualize_frame, text="View By Tags")
         view_tags_button.bind("<Button-1>", self.view_by_tag)
         view_tags_button.grid(row=3, column=1)
 
-        view_all_button = Button(self.history_frame, 
+        view_all_button = Button(self.visualize_frame, 
             text="View Deposits vs. Withdrawals")
         view_all_button.bind("<Button-1>", self.view_all)
         view_all_button.grid(row=4, column=1)
 
-        view_by_year_button = Button(self.history_frame,
+        view_by_year_button = Button(self.visualize_frame,
             text="View By Year Only")
         view_by_year_button.bind("<Button-1>", self.view_by_year)
         view_by_year_button.grid(row=5, column=1)
 
         # Back to Main Menu Button
-        back_button = Button(self.history_frame, text="Return to Main Menu")
+        back_button = Button(self.visualize_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
         back_button.grid(row=6, column=1)
 
 
+    def init_history_frame(self):
+        ''' Initialize View History Frame. '''
+
+        Label(self.history_frame, 
+            text="Please specify year and month. ").grid(column=1)
+
+        # Add Filter Modes (Year and Month)
+        Label(self.history_frame, text="Year (YYYY): ").grid(row=1, sticky=E)
+        Label(self.history_frame, text="Month (MM): ").grid(row=2, sticky=E)
+
+        self.hist_year_filter = Entry(self.history_frame)
+        self.hist_year_filter.grid(row=1, column=1)
+        self.hist_month_filter = Entry(self.history_frame)
+        self.hist_month_filter.grid(row=2, column=1)
+
+        show_summary_button = Button(self.history_frame,
+            text="Show Expenses Summary")
+        show_summary_button.bind("<Button-1>", self.show_summary)
+        show_summary_button.grid(row=3, column=1)
+
+        # Back to Main Menu Button
+        back_button = Button(self.history_frame, text="Return to Main Menu")
+        back_button.bind("<Button-1>", self.return_to_main)
+        back_button.grid(row=4, column=1)
+
+        pass
+
+
+    def show_summary(self, event):
+        ''' Perform SQL Query to show first K Transactions 
+        within given month and year. '''
+
+        in_year = self.hist_year_filter.get()
+        in_month = self.hist_month_filter.get()
+        
+        if (len(filters:=check_view_filters(in_year, in_month)) == 0):
+            # Invalid user filters
+            return
+
+        # Valid Month and Year given, but may or may not be associated with a record
+        user_year, user_month = filters
+        outputs = conn.execute('''
+            SELECT AMOUNT, MONTH, DAY, TAG FROM EXPENSES
+            WHERE YEAR == (?) AND MONTH == (?)
+            ORDER BY DAY 
+            LIMIT 10 ''', (user_year, user_month))
+
+        # Testing: Test with January 2002 for now
+        for row in outputs:
+            print("ROW: ", row)
+
+
     def view_by_year(self, event):
-        ''' Perform SQL Query to view all Transactions within given year. 
+        ''' Perform SQL Query to visualize all Transactions within given year. 
         Group by transaction type (withdrawal/deposits) and month. '''
         
         in_year = self.year_filter.get()
@@ -216,11 +275,15 @@ class ExpenseTracker:
             at_least_one_txn = True
             temp_amt = row[0]
             month_digit = row[1]
+            
+            # FIXED A BUG: Swapped statements below
             is_withdrawal_flag = row[2]
             if is_withdrawal_flag == 1:
-                total_deposits[month_digit - 1] = temp_amt
-            else:
                 total_withdrawals[month_digit - 1] = temp_amt
+                #total_deposits[month_digit - 1] = temp_amt
+            else:
+                total_deposits[month_digit - 1] = temp_amt
+                #total_withdrawals[month_digit - 1] = temp_amt
 
         if at_least_one_txn == False:
             messagebox.showerror("Query Failure",
@@ -391,6 +454,11 @@ class ExpenseTracker:
         else:
             # No entry given
             pass
+
+
+    def visualize_txn(self, event):
+        ''' Redirect to Visualize Transactions Page. '''
+        self.visualize_frame.tkraise()
 
 
     def view_history(self, event):
