@@ -31,9 +31,12 @@ class ExpenseTracker:
         self.withdraw_frame = Frame(master)
         self.visualize_frame = Frame(master)
         self.history_frame = Frame(master)
+        self.summary_frame = Frame(master)
+
         
         for f in (self.main_frame, self.new_txn_frame, 
-                self.withdraw_frame, self.visualize_frame, self.history_frame):
+                self.withdraw_frame, self.visualize_frame, 
+                self.history_frame, self.summary_frame):
             f.grid(row=0, column=0, sticky="NEWS")
 
         self.init_main_frame()
@@ -41,6 +44,7 @@ class ExpenseTracker:
         self.init_withdraw_frame()
         self.init_visualize_frame()
         self.init_history_frame()
+        self.init_summary_frame()
         self.init_db()
         
         # Go to Main Menu by default
@@ -161,7 +165,7 @@ class ExpenseTracker:
         ''' Initialize Visualize Transactions Frame. '''
         
         Label(self.visualize_frame, 
-            text="Please specify year and month, if applicable.").grid(column=1)
+            text="Please specify year and month, if applicable.").grid(columnspan=2)
         
         # Add Filter Modes (Year and Month)
         Label(self.visualize_frame, text="Year (YYYY): ").grid(row=1, sticky=E)
@@ -217,7 +221,20 @@ class ExpenseTracker:
         back_button.bind("<Button-1>", self.return_to_main)
         back_button.grid(row=4, column=1)
 
-        pass
+
+    def init_summary_frame(self):
+        ''' Initialize Summary Frame. '''
+        # Create Summary Table
+        prompt = Label(self.summary_frame, 
+            text="Displaying 10 earliest transactions. ").grid(row=0, columnspan=3)
+        header_amt = Label(self.summary_frame, text="Amount").grid(row=1, sticky=W)
+        header_date = Label(self.summary_frame, text="Date").grid(row=1, column=1, sticky=W)
+        header_tag = Label(self.summary_frame, text="Tag").grid(row=1, column=2, sticky=W)
+
+        # Back to Main Menu Button
+        back_button = Button(self.summary_frame, text="Return to Main Menu")
+        back_button.bind("<Button-1>", self.return_to_main)
+        back_button.grid(row=12, column=1) # In case summary length is exaclty 10 rows
 
 
     def show_summary(self, event):
@@ -233,15 +250,37 @@ class ExpenseTracker:
 
         # Valid Month and Year given, but may or may not be associated with a record
         user_year, user_month = filters
-        outputs = conn.execute('''
-            SELECT AMOUNT, MONTH, DAY, TAG FROM EXPENSES
+        cursor = conn.execute('''
+            SELECT AMOUNT, DAY, TAG FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?)
             ORDER BY DAY 
             LIMIT 10 ''', (user_year, user_month))
 
-        # Testing: Test with January 2002 for now
-        for row in outputs:
-            print("ROW: ", row)
+        records = cursor.fetchall()
+        if (len(records)):
+            # Display Summary Frame, if matching records found
+            self.summary_frame.tkraise()
+            for r, record in enumerate(records): # r rows
+                for c in range(3): # 3 columns selected
+                    summ_entry = Entry(self.summary_frame, width=20)
+                    
+                    data = record[c]
+                    if c == 0:
+                        data = '$' + format(record[c], '.2f')
+                    elif c == 1:
+                        # Create full date
+                        data = str(user_month) + '/' + str(record[c]) + '/' + str(user_year)
+                    elif data is None: # Tag DNE for Deposits
+                        data = "Deposit"
+                    summ_entry.insert(END, data)
+                    summ_entry.config(state="disabled")
+                    summ_entry.grid(row=r+2, column=c) # offset = 2
+
+        else:
+            messagebox.showerror("Query Failure",
+                "No existing transactions that fit your query.\
+                Please try a different year. ")
+            return
 
 
     def view_by_year(self, event):
@@ -256,7 +295,7 @@ class ExpenseTracker:
 
         # Valid Year given, but may or may not be associated with a record
         user_year, _ = filters
-        outputs = conn.execute(''' 
+        cursor = conn.execute(''' 
             SELECT SUM(AMOUNT), MONTH, IS_WITHDRAW FROM EXPENSES
             WHERE YEAR == (?)
             GROUP BY MONTH, IS_WITHDRAW ''', (user_year, ))
@@ -269,27 +308,25 @@ class ExpenseTracker:
         total_months = 12
         total_deposits = [0.0] * total_months
         total_withdrawals = [0.0] * total_months
-        at_least_one_txn = False
 
-        for row in outputs:
-            at_least_one_txn = True
-            temp_amt = row[0]
-            month_digit = row[1]
-            
-            # FIXED A BUG: Swapped statements below
-            is_withdrawal_flag = row[2]
-            if is_withdrawal_flag == 1:
-                total_withdrawals[month_digit - 1] = temp_amt
-                #total_deposits[month_digit - 1] = temp_amt
-            else:
-                total_deposits[month_digit - 1] = temp_amt
-                #total_withdrawals[month_digit - 1] = temp_amt
-
-        if at_least_one_txn == False:
+        records = cursor.fetchall()
+        if (len(records) == 0):
             messagebox.showerror("Query Failure",
                 "No existing transactions that fit your query.\
                 Please try a different year. ")
             return
+
+        # At least one record
+        for row in records:
+            at_least_one_txn = True
+            temp_amt = row[0]
+            month_digit = row[1]
+            
+            is_withdrawal_flag = row[2]
+            if is_withdrawal_flag == 1:
+                total_withdrawals[month_digit - 1] = temp_amt
+            else:
+                total_deposits[month_digit - 1] = temp_amt
 
         # Otherwise, plot grouped bar chart
         show_bar_chart(total_deposits, total_withdrawals, user_year)
@@ -308,14 +345,15 @@ class ExpenseTracker:
         # Otherwise, unpack filters
         user_year, user_month = filters
 
-        outputs = conn.execute(''' 
+        cursor = conn.execute(''' 
             SELECT SUM(AMOUNT), TAG FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?) AND IS_WITHDRAW == 1
             GROUP BY TAG ''', (user_year, user_month))
 
         all_amounts = []
         all_tags = []
-        for row in outputs: 
+
+        for row in cursor: 
             # Each row is a tuple, so unpack values
             temp_amt, temp_tag = row
             all_amounts.append(temp_amt)
@@ -346,7 +384,7 @@ class ExpenseTracker:
         # Otherwise, unpack filters
         user_year, user_month = filters
 
-        outputs = conn.execute(''' 
+        cursor = conn.execute(''' 
             SELECT SUM(AMOUNT), IS_WITHDRAW FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?)
             GROUP BY IS_WITHDRAW ''', (user_year, user_month))
@@ -355,7 +393,7 @@ class ExpenseTracker:
         deposits = None
         withdrawals = None
 
-        for i, row in enumerate(outputs):
+        for i, row in enumerate(cursor):
             if i == 0:
                 deposits = row[0]
             elif i == 1:
@@ -476,7 +514,9 @@ class ExpenseTracker:
         self.curr_balance_text.config(state="disabled")
         
         # Clear current contents
-        for widget in (self.user_date, self.user_amount, self.year_filter, self.month_filter):
+        for widget in (self.user_date, self.user_amount, 
+            self.year_filter, self.month_filter,
+            self.hist_year_filter, self.hist_month_filter):
             widget.delete(0, END)
         
         # Redirect to Main Frame
@@ -485,7 +525,6 @@ class ExpenseTracker:
 
 # Run ExpensesTracker GUI
 root = Tk()
-root.geometry("450x200")
 root.title('Personal Finance Tracker')
 my_tracker = ExpenseTracker(master=root)
 root.mainloop()

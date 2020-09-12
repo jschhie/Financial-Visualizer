@@ -1,1 +1,0 @@
-- Renamed 'View History' frame/buttons/functions to 'Visualize Transactions'
