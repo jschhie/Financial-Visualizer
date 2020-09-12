@@ -32,7 +32,6 @@ class ExpenseTracker:
         self.visualize_frame = Frame(master)
         self.history_frame = Frame(master)
         self.summary_frame = Frame(master)
-
         
         for f in (self.main_frame, self.new_txn_frame, 
                 self.withdraw_frame, self.visualize_frame, 
@@ -234,7 +233,7 @@ class ExpenseTracker:
         # Back to Main Menu Button
         back_button = Button(self.summary_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=12, column=1) # In case summary length is exaclty 10 rows
+        back_button.grid(row=12, column=1) # In case summary length is exactly 10 rows
 
 
     def show_summary(self, event):
@@ -263,8 +262,8 @@ class ExpenseTracker:
             for r, record in enumerate(records): # r rows
                 for c in range(3): # 3 columns selected
                     summ_entry = Entry(self.summary_frame, width=20)
-                    
                     data = record[c]
+                    # Determine type of data based on column index
                     if c == 0:
                         data = '$' + format(record[c], '.2f')
                     elif c == 1:
@@ -275,7 +274,6 @@ class ExpenseTracker:
                     summ_entry.insert(END, data)
                     summ_entry.config(state="disabled")
                     summ_entry.grid(row=r+2, column=c) # offset = 2
-
         else:
             messagebox.showerror("Query Failure",
                 "No existing transactions that fit your query.\
@@ -288,7 +286,6 @@ class ExpenseTracker:
         Group by transaction type (withdrawal/deposits) and month. '''
         
         in_year = self.year_filter.get()
-        
         if (len(filters:=check_view_filters(in_year, ignore_month=True)) == 0):
             # Invalid user filters
             return
@@ -404,7 +401,7 @@ class ExpenseTracker:
                 "No existing transactions that fit your query.\
                 Please try a different year and/or month. ")
             return
-
+        # Otherwise, show plot
         show_plot(exp_values=[deposits, withdrawals], 
             exp_labels=['Deposits', 'Withdrawals'],
             u_month=user_month, u_year=user_year)
