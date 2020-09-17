@@ -70,7 +70,7 @@ To better understand the outputs, please read the section [above](https://github
 | [2.B] ```View by Tags```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/sample_by_tags.png" width="350" height="350"> | In this case, view report for January 2002, by tags | 
 | [2.C] ```View by Year Only```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/new_bar_chart.png" width="350" height="350"> | Here, view report for Year=2002 as a whole (Group by Transaction Type and Month) |
 | [3] ``` View History ``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/summary_input.png" width="380" height="250"> | Get details on records for January 2002 |
-| [3.A] ``` Show Expenses Summary ``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/summary_table.png" width="350" height="350">| Display details for first 10 records | 
+| [3.A] ``` Show Expenses Summary ``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/summary_table.png" width="350" height="350">| Display details for first 10 records for January 2002 | 
 
 <details><summary><b>Show Table II Details</b></summary>
 
