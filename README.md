@@ -12,7 +12,7 @@ A graphical user interface (GUI) that helps track, categorize, and visualize all
 * [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
 
 ## Current Features
-- GUI and visual graphs are supported by the ```tkinter``` and ```matplotlib``` modules
+- GUI and visual graphs are supported by the ```tkinter```, ```matplotlib```, and ```numpy``` modules
 - Database stores transaction records and retrieves relevant records through ```sqlite3``` queries
   - Avoids SQL injection and exceptions at runtime by ensuring that all user input is valid
 - Allows users to cancel a transaction and return to the Main Menu at any time
@@ -81,4 +81,4 @@ Again, Table II's entries reflect the sample data provided; it does not show the
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
 
-From creating this project, I learned about ```tkinter```, ```sqlite3```, and ```matplotlib``` modules and applied them for the first time. 
+From creating this project, I learned about the ```tkinter```, ```sqlite3```, ```matplotlib```, and even ```numpy``` modules at once and applied them for the first time. 
