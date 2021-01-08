@@ -81,4 +81,4 @@ Again, Table II's entries reflect the sample data provided; it does not show the
 ## Acknowledgments
 This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
 
-From creating this project, I learned about the ```tkinter```, ```sqlite3```, ```matplotlib```, and even ```numpy``` modules at once and applied them for the first time. 
+From creating this project, I learned about some of Python's many libraries at once and integrated them into a single GUI application. 
