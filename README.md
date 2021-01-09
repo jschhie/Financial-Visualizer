@@ -4,12 +4,13 @@
 ## Project Overview
 A graphical user interface (GUI) that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
+While writing the source code, I relied on various online tutorials and code documentations. From creating this project, I learned about some of Python's many libraries at once and integrated them into a single GUI application. 
+
 ## Table of Contents
 * [Current Features](https://github.com/jschhie/expenseTracker/#current-features)
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
 * [About the Sample Resources](https://github.com/jschhie/expenseTracker/#about-the-sample-resources)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
-* [Acknowledgments](https://github.com/jschhie/expenseTracker/#acknowledgments)
 
 ## Current Features
 - GUI functionality and data visualization are supported by ```tkinter```, ```matplotlib```, and ```numpy```.
@@ -77,8 +78,3 @@ To better understand the outputs, please read the section [above](https://github
 Again, Table II's entries reflect the sample data provided; it does not show the *entire* process of committing/inputting all of the transactions into the database. Table II also does not show the program's response to all possible user input errors. If interested, please see the [updated_demos](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for all the generated error messages.
 
 </details>
-
-## Acknowledgments
-This was an independent project. While writing the source code, I relied on various online tutorials, documentations, and examples. All visual demos and sample resources (such as the database instance) were also created by myself. 
-
-From creating this project, I learned about some of Python's many libraries at once and integrated them into a single GUI application. 
