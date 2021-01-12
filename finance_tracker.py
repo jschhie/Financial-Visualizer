@@ -248,12 +248,13 @@ class ExpenseTracker:
         global user_year
         global user_month
         user_year, user_month = filters
-
+        
+        # Save a global cursor object of query: Re-used when 'Show More Records' button is clicked
         global cursor
         cursor = conn.execute('''
             SELECT AMOUNT, DAY, TAG FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?)
-            ORDER BY DAY ''', (user_year, user_month)) # Removed LIMIT 10
+            ORDER BY DAY ''', (user_year, user_month))
 
         if (cursor.rowcount != 0):
             # Display Summary Frame, if matching records found
@@ -276,7 +277,6 @@ class ExpenseTracker:
     def output_rows(self, show_more=False):
         ''' Helper function to display remaining data records. 
         show_more: if output_rows() was called by show_more_records() '''
-        # Global cursor object and row index: Conditionally used by show_more_records()
         global cursor
         global user_year
         global user_month
