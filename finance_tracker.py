@@ -224,8 +224,9 @@ class ExpenseTracker:
     def init_summary_frame(self):
         ''' Initialize Summary Frame. '''
         # Create Summary Table
-        prompt = Label(self.summary_frame, 
-            text="Displaying 10 earliest transactions. ").grid(row=0, columnspan=3)
+        header_string = "Displaying 10 transactions at a time. Click 'Show More Records' to see next 10 rows. "
+        prompt = Label(self.summary_frame, text=header_string).grid(row=0, columnspan=3)
+
         header_amt = Label(self.summary_frame, text="Amount").grid(row=1, sticky=W)
         header_date = Label(self.summary_frame, text="Date").grid(row=1, column=1, sticky=W)
         header_tag = Label(self.summary_frame, text="Tag").grid(row=1, column=2, sticky=W)
@@ -235,6 +236,10 @@ class ExpenseTracker:
         back_button.bind("<Button-1>", self.return_to_main)
         back_button.grid(row=12, column=1) # In case summary length is exactly 10 rows
 
+        # Show More Button (in case > k=10 records retrieved)
+        show_more_button = Button(self.summary_frame, text="Show More Records")
+        show_more_button.bind("<Button-1>", self.show_more_records)
+        show_more_button.grid(row=13, column=1)
 
     def show_summary(self, event):
         ''' Perform SQL Query to show first K Transactions 
@@ -248,18 +253,49 @@ class ExpenseTracker:
             return
 
         # Valid Month and Year given, but may or may not be associated with a record
+        global user_year
+        global user_month
         user_year, user_month = filters
+
+        global cursor
         cursor = conn.execute('''
             SELECT AMOUNT, DAY, TAG FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?)
-            ORDER BY DAY 
-            LIMIT 10 ''', (user_year, user_month))
+            ORDER BY DAY ''', (user_year, user_month)) # Removed LIMIT 10
 
-        records = cursor.fetchall()
-        if (len(records)):
+        if (cursor.rowcount != 0):
             # Display Summary Frame, if matching records found
             self.summary_frame.tkraise()
-            for r, record in enumerate(records): # r rows
+            self.output_rows()
+        else:
+            # Empty results for query
+            messagebox.showerror("Query Failure",
+                "No existing transactions that fit your query.\
+                Please try a different year. ")
+
+
+    def show_more_records(self, event): 
+        ''' Called by show_summary(): Displays additional records. '''
+        # Sets show_more flag to True: Overwrites and erases extra rows from previous query
+        self.output_rows(show_more=True)
+        return
+
+
+    def output_rows(self, show_more=False):
+        ''' Helper function to display remaining data records. 
+        show_more: if output_rows() was called by show_more_records() '''
+        # Global cursor object and row index: Conditionally used by show_more_records()
+        global cursor
+        global user_year
+        global user_month
+
+        limit = 10 # Limit number of rows shown at once
+        records = cursor.fetchmany(limit) 
+
+        numToOverwrite = len(records)
+        if (numToOverwrite):
+            # Modify Show Summary Header
+            for r, record in enumerate(records): # r rows (starts from index 0)
                 for c in range(3): # 3 columns selected
                     summ_entry = Entry(self.summary_frame, width=20)
                     data = record[c]
@@ -271,13 +307,27 @@ class ExpenseTracker:
                         data = str(user_month) + '/' + str(record[c]) + '/' + str(user_year)
                     elif data is None: # Tag DNE for Deposits
                         data = "Deposit"
+                    # Display data for each column: Amount, Date, Tag
                     summ_entry.insert(END, data)
                     summ_entry.config(state="disabled")
                     summ_entry.grid(row=r+2, column=c) # offset = 2
+            # Check if need to erase previous rows 
+            if show_more:
+                # Number of rows left to overwrite and erase
+                numToErase = 10 - numToOverwrite
+                i = 0
+                startPos = numToOverwrite + 2
+                while (numToErase):
+                    for c in range(3):
+                        summ_entry = Entry(self.summary_frame)
+                        summ_entry.insert(END, "")
+                        summ_entry.config(state="disabled")
+                        summ_entry.grid(row=startPos+i, column=c)
+                    numToErase -= 1
+                    i += 1
         else:
-            messagebox.showerror("Query Failure",
-                "No existing transactions that fit your query.\
-                Please try a different year. ")
+            # No more remaining records
+            messagebox.showerror("Error", "No more remaining records to be shown for given date range.")
             return
 
 
@@ -503,7 +553,6 @@ class ExpenseTracker:
 
     def return_to_main(self, event):
         ''' Returns to Main Frame. '''
-        
         # Get most up-to-date balance
         self.curr_balance_text.config(state="normal")
         self.curr_balance_text.delete(0, END)
