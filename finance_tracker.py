@@ -14,7 +14,6 @@ class ExpenseTracker:
     
     def __init__(self, master):
         ''' Initialize ExpenseTracker and open its database. '''
-        
         self.master = master
         self.results_tuple = () # Stores user input if valid
         
@@ -69,7 +68,6 @@ class ExpenseTracker:
 
     def init_main_frame(self):
         ''' Initialize Main Frame. '''
-        
         # Show Main Menu and Current Balance
         Label(self.main_frame, text="Main Menu").grid(column=1)
         Label(self.main_frame, text="Current Balance: ").grid(sticky=E)
@@ -144,7 +142,6 @@ class ExpenseTracker:
 
     def init_withdraw_frame(self):
         ''' Initialize New Frame specifically for Withdrawals. '''
-        
         Label(self.withdraw_frame, text="To continue withdrawal, select a Tag.").grid(column=1)
         Label(self.withdraw_frame, text="Available Tags: ").grid(row=1, sticky=E)
 
@@ -152,17 +149,14 @@ class ExpenseTracker:
         tags_listbox = Listbox(self.withdraw_frame, selectmode=BROWSE, height=7)
         tags = ['Shopping', 'Health', 'Food/Drink', 'Bills', 
             'Travel', 'Entertainment', 'Other']
-        
         for tag in tags:
             tags_listbox.insert(END, tag)
-            
         tags_listbox.bind("<<ListboxSelect>>", self.get_tag)
         tags_listbox.grid(row=1, column=1)
 
 
     def init_visualize_frame(self):
         ''' Initialize Visualize Transactions Frame. '''
-        
         Label(self.visualize_frame, 
             text="Please specify year and month, if applicable.").grid(columnspan=2)
         
@@ -197,7 +191,6 @@ class ExpenseTracker:
 
     def init_history_frame(self):
         ''' Initialize View History Frame. '''
-
         Label(self.history_frame, 
             text="Please specify year and month. ").grid(column=1)
 
@@ -241,13 +234,12 @@ class ExpenseTracker:
         show_more_button.bind("<Button-1>", self.show_more_records)
         show_more_button.grid(row=13, column=1)
 
+
     def show_summary(self, event):
         ''' Perform SQL Query to show first K Transactions 
         within given month and year. '''
-
         in_year = self.hist_year_filter.get()
         in_month = self.hist_month_filter.get()
-        
         if (len(filters:=check_view_filters(in_year, in_month)) == 0):
             # Invalid user filters
             return
@@ -275,7 +267,7 @@ class ExpenseTracker:
 
 
     def show_more_records(self, event): 
-        ''' Called by show_summary(): Displays additional records. '''
+        ''' Called when 'Show More Records' button is clicked. Displays additional records. '''
         # Sets show_more flag to True: Overwrites and erases extra rows from previous query
         self.output_rows(show_more=True)
         return
@@ -334,13 +326,12 @@ class ExpenseTracker:
     def view_by_year(self, event):
         ''' Perform SQL Query to visualize all Transactions within given year. 
         Group by transaction type (withdrawal/deposits) and month. '''
-        
         in_year = self.year_filter.get()
         if (len(filters:=check_view_filters(in_year, ignore_month=True)) == 0):
             # Invalid user filters
             return
 
-        # Valid Year given, but may or may not be associated with a record
+        # Otherwise, valid Year given, but may or may not be associated with a record
         user_year, _ = filters
         cursor = conn.execute(''' 
             SELECT SUM(AMOUNT), MONTH, IS_WITHDRAW FROM EXPENSES
@@ -382,7 +373,6 @@ class ExpenseTracker:
     def view_by_tag(self, event):
         ''' Perform SQL Query to view Transactions, 
         by associated Tag for specified year and month. '''
-        
         # Check for valid numeric inputs
         in_year = self.year_filter.get()
         in_month = self.month_filter.get()
@@ -391,7 +381,6 @@ class ExpenseTracker:
 
         # Otherwise, unpack filters
         user_year, user_month = filters
-
         cursor = conn.execute(''' 
             SELECT SUM(AMOUNT), TAG FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?) AND IS_WITHDRAW == 1
@@ -399,7 +388,6 @@ class ExpenseTracker:
 
         all_amounts = []
         all_tags = []
-
         for row in cursor: 
             # Each row is a tuple, so unpack values
             temp_amt, temp_tag = row
@@ -423,14 +411,12 @@ class ExpenseTracker:
         
         in_year = self.year_filter.get()
         in_month = self.month_filter.get()
-        
         if (len(filters:=check_view_filters(in_year, in_month)) == 0):
             # Invalid user filters
             return
 
         # Otherwise, unpack filters
         user_year, user_month = filters
-
         cursor = conn.execute(''' 
             SELECT SUM(AMOUNT), IS_WITHDRAW FROM EXPENSES
             WHERE YEAR == (?) AND MONTH == (?)
@@ -544,12 +530,12 @@ class ExpenseTracker:
     def visualize_txn(self, event):
         ''' Redirect to Visualize Transactions Page. '''
         self.visualize_frame.tkraise()
-
+        return
 
     def view_history(self, event):
         ''' Redirect to View History Page. '''
         self.history_frame.tkraise()
-
+        return
 
     def return_to_main(self, event):
         ''' Returns to Main Frame. '''
