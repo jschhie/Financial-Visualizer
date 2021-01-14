@@ -65,7 +65,7 @@ To better understand the outputs, please read the section [above](https://github
 | [0] ```None``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/new_main_menu.png"> | (Initial Program State) |
 | [1] ```New Transaction``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/new_txn_page.png"> | Choose to deposit/withdraw amount |
 | [1.A] ```Deposit``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/successful_deposit.png"> | Program will notify user of successful deposit/withdrawal | 
-| [1.B] ```Continue with Withdrawal``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/choose_tag_page.png"> | Associate transaction with a Tag |
+| [1.B] ```Continue with Withdrawal``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/choose_tag_page.png"> | Associate transaction with a Tag |
 | [2] ```Visualize Transactions``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/new_view_history_page.png"> | Choose viewing mode |
 | [2.A] ```View deposits vs. withdrawals```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="350" height="350"> | In this case, view report for January 2002 |  
 | [2.B] ```View by Tags```| <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/sample_by_tags.png" width="350" height="350"> | In this case, view report for January 2002, by tags | 
