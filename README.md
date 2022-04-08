@@ -1,5 +1,4 @@
 # Personal Finance Tracker GUI
-> Created in Summer 2020. Written in Python.
 
 ## Project Overview
 A graphical user interface (GUI) that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
