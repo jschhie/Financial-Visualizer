@@ -3,7 +3,7 @@
 ## Project Overview
 A graphical user interface (GUI) that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
-While writing the source code, I relied on various online tutorials and code documentations. From creating this project, I learned about some of Python's many libraries at once and integrated them into a single GUI application. 
+From creating this project, I learned about some of Python's many libraries at once and integrated them into a single GUI application. 
 
 ## Table of Contents
 * [Current Features](https://github.com/jschhie/expenseTracker/#current-features)
