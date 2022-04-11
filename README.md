@@ -71,8 +71,3 @@ To better understand the outputs, please read the section [above](https://github
 | [3] ``` View History ``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/summary_input.png" width="380" height="250"> | Get details on records for January 2002 |
 | [3.A] ``` Show Expenses Summary ``` | <img src="https://github.com/jschhie/expenseTracker/blob/master/updated_demos/valid_txns/show_more_records.png" width="350" height="350">| Display details for first 10 records for January 2002. User can optionally see next 10 records by clicking the 'Show More Records' button. | 
 
-<details><summary><b>Show Table II Notes</b></summary>
-
-If interested, please see the [sample_errors directory](https://github.com/jschhie/expenseTracker/tree/master/updated_demos/sample_errors) for all the generated error messages.
-
-</details>
