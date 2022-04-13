@@ -3,7 +3,7 @@
 ## Project Overview
 A Tkinter graphical user interface (GUI) in Python that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
-From creating this project, I learned about some of Python's many libraries at once and integrated them into a single GUI application. 
+From creating this project, I learned about some of Python's many libraries/frameworks at once and integrated them into a single GUI application. 
 
 ## Table of Contents
 * [Current Features](https://github.com/jschhie/expenseTracker/#current-features)
