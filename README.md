@@ -1,7 +1,7 @@
 # Personal Finance Tracker GUI
 
 ## Project Overview
-A graphical user interface (GUI) that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
+A Tkinter graphical user interface (GUI) in Python that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
 From creating this project, I learned about some of Python's many libraries at once and integrated them into a single GUI application. 
 
