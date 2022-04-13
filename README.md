@@ -8,14 +8,13 @@ From creating this project, I learned about some of Python's many libraries at o
 ## Table of Contents
 * [Current Features](https://github.com/jschhie/expenseTracker/#current-features)
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
-* [About the Sample Resources](https://github.com/jschhie/expenseTracker/#about-the-sample-resources)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
 
 ## Current Features
 - GUI functionality and data visualization are supported by ```tkinter```, ```matplotlib```, and ```numpy```.
-- Database stores transaction records and retrieves relevant records through ```sqlite3``` queries
-- Allows users to cancel a transaction and return to the Main Menu at any time
-- Total balance reflects the changes made during all of the user's sessions
+- Database stores transaction records and retrieves relevant records through ```sqlite3``` queries.
+- Total balance reflects the changes made during all of the user's sessions.
+- Available tags to categorize transactions: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'.
 
 ## Program Requirements
 This Python program simply requires the user to install ```matplotlib``` (and ```python3```!). 
@@ -28,34 +27,10 @@ As-is, the program has been initialized with some sample transactions, which are
 
 </details>
 
-## About the Sample Resources
-### Table I: Snippet of DB Records
-| TID | Month | Day | Year | Amount | Is_Withdrawal | Tag |
-| :---: | :---: | :---: | :---:| :---: | :---: | :---:|
-| 1 | 1 | 1 | 2002 | 1.11 | 0 | None |
-| 2 | 1 | 15 | 2002 | 12.99 | 1 | 'Food/Drink' |
-| 3 | 1	| 31 | 2002	| 31.00 | 1	| 'Bills' | 
-| ... | ...	| ... | ...	| ... | ...	| ... | 
-
-
-<details><summary><b>Show Table I Details</b></summary>
-
-Table I is a snippet of the ```sample_records.csv```. See the [updated_demos](https://github.com/jschhie/expenseTracker/tree/master/updated_demos) for the full list of records.
-
-Each record represents a successful transaction and is identified by a Transaction ID, or *TID*. 
-
-In particular, the *Is_Withdrawal* field stores a boolean, which indicates if the *Amount* was deposited or withdrawn on the specified date. The last field, *Tag*, pertains to money withdrawals only. By default, the last two fields will be set to False/None for all deposits, respectively.
-
-The current implementation has six available tags as follows: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'. 
-
-Lastly, *Month* is a digit, *k* that correponds to the *k*th calendar month. For example, if *k*=12, the respective record was committed on the 12th month--namely, December.
-
-</details>
 
 ## Visual Demo
 The following results are based on the supplied ```curr_balance.pickle``` file and ```expenses.db``` database. 
 
-To better understand the outputs, please read the section [above](https://github.com/jschhie/expenseTracker/#about-the-sample-resources).
 
 ### Table II: Sample User Requests & Program Responses
 | User Request | Program Response | Key Notes |
