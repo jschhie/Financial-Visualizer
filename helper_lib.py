@@ -12,9 +12,7 @@ digit_month_map = {1: "Jan.", 2: "Feb.", 3: "Mar.",
 def check_view_filters(in_year, in_month=None, ignore_month=False):
     ''' Ensures that user input for Month and Year fields are valid.'''
     try:
-        # Attempt to convert Year Entry field into integer
         in_year = int(in_year)
-        # Check if year field is within range
         assert(in_year >= 2000 and in_year <= 2020)
         # Check if 'View By Year Only' Button selected
         if (ignore_month == False):
@@ -27,10 +25,9 @@ def check_view_filters(in_year, in_month=None, ignore_month=False):
             # Success, but ignore month field
             return (in_year, -1)
     except:
-        add_str = "" # Empty string, by default
+        add_str = "" 
         if (ignore_month == False):
             add_str = " and month"
-        # Conditional print
         messagebox.showerror("Input Error", 
             "Please provide valid year%s." % add_str)
         return () # Failure
@@ -65,20 +62,16 @@ def autolabel(rects):
 
 def show_bar_chart(total_deposits, total_withdrawals, user_year):
     ''' Creates and displays the Grouped Bar Chart. '''
-    # NOTE: The following code is based on a tutorial online
     bar_width = 0.25
-    # Set position of bar on X axis
     r1 = np.arange(len(total_deposits))
     r2 = [x + bar_width for x in r1]
 
-    # Make plot
     rects1 = plt.bar(r1, total_deposits, width=bar_width, 
         edgecolor='white', label='Total Deposits')
     
     rects2 = plt.bar(r2, total_withdrawals, width=bar_width, 
         edgecolor='white', label='Total Withdrawals')
 
-    # Add xticks and label each group by correct month name
     plt.xlabel('Month')
     plt.ylabel('Transactions Amount ($)')
     plt.title('Expenses Report for %d: Transactions Grouped by Month' % user_year)
@@ -88,7 +81,6 @@ def show_bar_chart(total_deposits, total_withdrawals, user_year):
     autolabel(rects1)
     autolabel(rects2)
 
-    # Create legend and show bar graphs
     plt.legend()
     plt.show()
 
@@ -96,10 +88,8 @@ def show_bar_chart(total_deposits, total_withdrawals, user_year):
 def check_txn_input(pending_total, pending_change, user_date, is_deposit_txn):
     ''' Checks for valid amount to deposit/withdraw and valid
     date entry in (MM/DD/YYYY) format. '''
-    # Check User Amount first
     try:
         pending_change = float(pending_change)
-        # Make sure amount is positive
         assert(pending_change > 0.0)
         enough_funds = True
         if is_deposit_txn:
@@ -119,19 +109,15 @@ def check_txn_input(pending_total, pending_change, user_date, is_deposit_txn):
             assert(int(day) <= 31 and int(month) > 0)
             assert(int(year) >= 2000 and int(year) <= 2020)
 
-            # Warn user if any insufficient funds but continue to process txn
             if (enough_funds == False):
                 messagebox.showwarning('Insufficient Funds',
                     'Amount to withdraw is greater than current balance.')
             # Successful New Transaction (Deposit/Withdraw)
-            # Return a tuple of user input
             return (pending_total, month, day, year, pending_change)
         except:
-            # Indicate txn failure
             messagebox.showerror("Input Error",
                 "Please use (MM/DD/YYYY) format.\
                 \nYear should be between 2000 and 2020.")
     except:
-        # Indicate txn failure
         messagebox.showerror("Input Error", "Please enter a valid, positive amount.")
     return () # Empty tuple
