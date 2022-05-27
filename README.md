@@ -13,7 +13,6 @@ From creating this project, I learned about some of Python's many libraries/fram
 ## Current Features
 - GUI functionality and data visualization are supported by ```tkinter```, ```matplotlib```, and ```numpy```.
 - Database stores transaction records and retrieves relevant records through ```sqlite3``` queries.
-- Available tags to categorize transactions: 'Shopping', 'Health', 'Bills', 'Travel', 'Food/Drink', and 'Other'.
 
 ## Program Requirements
 This GUI app requires ```matplotlib``` and ```python3```.
