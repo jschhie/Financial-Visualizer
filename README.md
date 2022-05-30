@@ -1,7 +1,7 @@
 # Financial Visualizer
 
 ## Project Overview
-A Tkinter user-friendly graphical user interface (GUI) in Python that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
+An user-friendly Tkinter graphical user interface (GUI) in Python that helps track, categorize, and visualize all personal transactions (i.e., withdrawals/deposits).
 
 From creating this project, I learned about some of Python's many libraries/frameworks at once and integrated them into a single GUI application. 
 
