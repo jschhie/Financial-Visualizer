@@ -1,6 +1,6 @@
 # Financial Visualizer
 
-> Written in Python3 with Tkinter, SQLite, and Matplotlib
+> Python, Tkinter, SQLite, Matplotlib.
 
 ## Project Overview
 A user-friendly Tkinter graphical user interface (GUI) application that helps track, categorize, and visualize personal financial expenses/deposits.
