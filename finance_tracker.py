@@ -74,25 +74,25 @@ class ExpenseTracker:
         self.curr_balance_text = Entry(self.main_frame)
         self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
         self.curr_balance_text.config(state="disabled")
-        self.curr_balance_text.grid(row=1, column=1)
+        self.curr_balance_text.grid(row=1, column=1, padx=20, pady=20)
         
         Label(self.main_frame, text="Choose an Action: ").grid(row=2, sticky=E)
 
         new_txn_button = Button(self.main_frame, text="New Transaction")
         new_txn_button.bind("<Button-1>", self.add_new_txn)
-        new_txn_button.grid(row=2, column=1)
+        new_txn_button.grid(row=2, column=1, padx=5, pady=5)
 
         visualize_button = Button(self.main_frame, text="Visualize Transactions")
         visualize_button.bind("<Button-1>", self.visualize_txn)
-        visualize_button.grid(row=3, column=1)        
+        visualize_button.grid(row=3, column=1, padx=5, pady=5)        
         
         view_button = Button(self.main_frame, text="View History")
         view_button.bind("<Button-1>", self.view_history)
-        view_button.grid(row=4, column=1)
+        view_button.grid(row=4, column=1, padx=5, pady=5)
 
         quit_button = Button(self.main_frame, text="Save Changes")
         quit_button.bind("<Button-1>", self.custom_quit)
-        quit_button.grid(row=5, column=1)
+        quit_button.grid(row=5, column=1, padx=5, pady=5)
 
 
     def init_new_txn_frame(self):
@@ -101,23 +101,23 @@ class ExpenseTracker:
         
         Label(self.new_txn_frame, text="Amount: ").grid(row=1, sticky=E)
         self.user_amount = Entry(self.new_txn_frame)
-        self.user_amount.grid(row=1, column=1)
+        self.user_amount.grid(row=1, column=1, padx=5, pady=5)
         
         Label(self.new_txn_frame, text="Date (MM/DD/YYYY): ").grid(row=2, sticky=E)
         self.user_date = Entry(self.new_txn_frame)
-        self.user_date.grid(row=2, column=1)
+        self.user_date.grid(row=2, column=1, padx=20, pady=20)
 
         deposit_button = Button(self.new_txn_frame, text="Deposit")
         deposit_button.bind("<Button-1>", self.deposit_money)
-        deposit_button.grid(row=3, column=1)
+        deposit_button.grid(row=3, column=1, padx=5, pady=5)
 
         withdraw_button = Button(self.new_txn_frame, text="Withdraw")
         withdraw_button.bind("<Button-1>", self.withdraw_money)
-        withdraw_button.grid(row=4, column=1)
+        withdraw_button.grid(row=4, column=1, padx=5, pady=5)
 
         back_button = Button(self.new_txn_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=5, column=1)
+        back_button.grid(row=5, column=1, padx=5, pady=5)
     
 
     def init_withdraw_frame(self):
@@ -133,7 +133,7 @@ class ExpenseTracker:
             tags_listbox.insert(END, tag)
         
         tags_listbox.bind("<<ListboxSelect>>", self.get_tag)
-        tags_listbox.grid(row=1, column=1)
+        tags_listbox.grid(row=1, column=1, padx=20, pady=20)
 
 
     def init_visualize_frame(self):
@@ -144,27 +144,27 @@ class ExpenseTracker:
         Label(self.visualize_frame, text="Month (MM): ").grid(row=2, sticky=E)
 
         self.year_filter = Entry(self.visualize_frame)
-        self.year_filter.grid(row=1, column=1)
+        self.year_filter.grid(row=1, column=1, padx=5, pady=5)
         self.month_filter = Entry(self.visualize_frame)
-        self.month_filter.grid(row=2, column=1)
+        self.month_filter.grid(row=2, column=1, padx=20, pady=20)
         
         view_tags_button = Button(self.visualize_frame, text="View By Tags")
         view_tags_button.bind("<Button-1>", self.view_by_tag)
-        view_tags_button.grid(row=3, column=1)
+        view_tags_button.grid(row=3, column=1, padx=5, pady=5)
         
         view_all_button = Button(self.visualize_frame, 
             text="View Deposits vs. Withdrawals")
         view_all_button.bind("<Button-1>", self.view_all)
-        view_all_button.grid(row=4, column=1)
+        view_all_button.grid(row=4, column=1, padx=5, pady=5)
        
         view_by_year_button = Button(self.visualize_frame,
             text="View By Year Only")
         view_by_year_button.bind("<Button-1>", self.view_by_year)
-        view_by_year_button.grid(row=5, column=1)
+        view_by_year_button.grid(row=5, column=1, padx=5, pady=5)
        
         back_button = Button(self.visualize_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=6, column=1)
+        back_button.grid(row=6, column=1, padx=5, pady=5)
 
 
     def init_history_frame(self):
@@ -176,18 +176,18 @@ class ExpenseTracker:
         Label(self.history_frame, text="Month (MM): ").grid(row=2, sticky=E)
         
         self.hist_year_filter = Entry(self.history_frame)
-        self.hist_year_filter.grid(row=1, column=1)
+        self.hist_year_filter.grid(row=1, column=1, padx=5, pady=5)
         self.hist_month_filter = Entry(self.history_frame)
-        self.hist_month_filter.grid(row=2, column=1)
+        self.hist_month_filter.grid(row=2, column=1, padx=20, pady=20)
       
         show_summary_button = Button(self.history_frame,
             text="Show Expenses Summary")
         show_summary_button.bind("<Button-1>", self.show_summary)
-        show_summary_button.grid(row=3, column=1)
+        show_summary_button.grid(row=3, column=1, padx=5, pady=5)
       
         back_button = Button(self.history_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=4, column=1)
+        back_button.grid(row=4, column=1, padx=5, pady=5)
 
 
     def init_summary_frame(self):
@@ -198,18 +198,18 @@ class ExpenseTracker:
         prompt_a = Label(self.summary_frame, text=header_a).grid(row=0, columnspan=3)
         prompt_b = Label(self.summary_frame, text=header_b).grid(row=1, columnspan=3)
         
-        header_amt = Label(self.summary_frame, text="Amount").grid(row=2, sticky=W)
-        header_date = Label(self.summary_frame, text="Date").grid(row=2, column=1, sticky=W)
-        header_tag = Label(self.summary_frame, text="Tag").grid(row=2, column=2, sticky=W)
+        header_amt = Label(self.summary_frame, text="Amount").grid(row=2, sticky=W, padx=5, pady=5)
+        header_date = Label(self.summary_frame, text="Date").grid(row=2, column=1, sticky=W, padx=5, pady=5)
+        header_tag = Label(self.summary_frame, text="Tag").grid(row=2, column=2, sticky=W, padx=5, pady=5)
         
         back_button = Button(self.summary_frame, text="Return to Main Menu")
         back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=13, column=1)        
+        back_button.grid(row=13, column=1, padx=20, pady=20)        
         
         # Show More Button (in case > 10 records retrieved)
         show_more_button = Button(self.summary_frame, text="Show More Records")
         show_more_button.bind("<Button-1>", self.show_more_records)
-        show_more_button.grid(row=14, column=1)
+        show_more_button.grid(row=14, column=1, padx=5, pady=5)
 
 
     ###############################################################
@@ -539,5 +539,6 @@ class ExpenseTracker:
 # Run ExpensesTracker GUI
 root = Tk()
 root.title('Personal Finance Tracker')
+root.geometry("500x600")
 my_tracker = ExpenseTracker(master=root)
 root.mainloop()
