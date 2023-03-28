@@ -1,34 +1,20 @@
 # Financial Visualizer
 
-> Python, Tkinter, SQLite, Matplotlib.
+> Python, Tkinter, Matplotlib, SQLite.
 
 ## Project Overview
-A user-friendly Tkinter graphical user interface (GUI) application that helps track, categorize, and visualize personal financial expenses/deposits.
+A Tkinter-based graphical user interface (GUI) application that helps track, categorize, and visualize personal financial expenses/deposits.
 
 ## Table of Contents
-* [Current Features](https://github.com/jschhie/expenseTracker/#current-features)
 * [Program Requirements](https://github.com/jschhie/expenseTracker/#program-requirements)
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
-
-## Current Features
-- GUI functionality and data visualization are supported by ```tkinter``` and ```matplotlib```.
-- Database stores transactions and retrieves relevant records through ```sqlite3``` queries.
 
 ## Program Requirements
 This GUI application requires ```matplotlib``` and ```python3```.
 
 To run the program on Terminal, for example, enter ``` python3 finance_tracker.py ```.
 
-<details><summary><b>Show Details</b></summary>
-
-As-is, the program has been initialized with some sample transactions, which are stored in the database ```expenses.db``` and ```curr_balance.pickle``` file. Alternatively, the user may provide their own input or "reset" the program.
-
-</details>
-
-
 ## Visual Demo
-The following results are based on ```curr_balance.pickle``` and ```expenses.db```. 
-
 
 ### Table II: Sample User Requests & Program Responses
 | User Request | Program Response | Key Notes |
