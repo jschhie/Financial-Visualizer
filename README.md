@@ -19,15 +19,22 @@ To run the program on Terminal, for example, enter ``` python3 finance_tracker.p
 
 ## Visual Demo
 
-### Table II: Sample User Requests & Program Responses
-| User Request | Program Response | Key Notes |
-| :---: | :---: | :---: |
-| [0] ```None``` | <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_main_menu.png"> | (Initial Program State) |
-| [1] ```New Transaction``` | <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_txn_page.png"> | Choose to deposit/withdraw amount |
-| [1.B] ```Continue with Withdrawal``` | <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/choose_tag_page.png"> | Associate transaction with a Tag |
-| [2] ```Visualize Transactions``` | <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_view_history_page.png"> | Choose viewing mode |
-| [2.A] ```View deposits vs. withdrawals```| <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="350" height="350"> | In this case, view report for January 2002 |  
-| [2.B] ```View by Tags```| <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_by_tags.png" width="350" height="350"> | In this case, view report for January 2002, by tags | 
-| [2.C] ```View by Year Only```| <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_bar_chart.png" width="350" height="350"> | Here, view report for Year=2002 as a whole (Group by Transaction Type and Month) |
-| [3] ``` View History ``` | <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/summary_input.png" width="380" height="250"> | Get details on records for January 2002 |
-| [3.A] ``` Show Expenses Summary ``` | <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/show_more_records.png" width="350" height="350">| Display details for first 10 records for January 2002. User can optionally see next 10 records by clicking the 'Show More Records' button. | 
+Sample User Requests & Program Responses
+
+### Initial Program State
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-main2.png" width="350">
+
+### Continue with Withdrawal
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-choose-tags.png" width="350"> 
+
+### View deposits vs. withdrawals
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="350">
+
+### View by Tags
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_by_tags.png" width="350">
+
+### View by Year Only
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_bar_chart.png" width="350">
+
+### Show Expenses Summary
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-summary.png" width="350">
