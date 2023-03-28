@@ -24,9 +24,6 @@ Sample User Requests & Program Responses
 ### Initial Program State
 <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-main2.png" width="450">
 
-### Continue with Withdrawal
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-choose-tags.png" width="450"> 
-
 ### View deposits vs. withdrawals
 <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="450">
 
