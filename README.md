@@ -10,7 +10,10 @@ A Tkinter-based graphical user interface (GUI) application that helps track, cat
 * [Visual Demo](https://github.com/jschhie/expenseTracker/#visual-demo)
 
 ## Program Requirements
-This GUI application requires ```matplotlib``` and ```python3```.
+This GUI requires ```matplotlib``` and ```numpy```. To install these, you can run: 
+``` 
+pip3 install -r requirements.txt
+```
 
 To run the program on Terminal, for example, enter ``` python3 finance_tracker.py ```.
 
