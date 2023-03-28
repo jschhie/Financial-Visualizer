@@ -22,19 +22,19 @@ To run the program on Terminal, for example, enter ``` python3 finance_tracker.p
 Sample User Requests & Program Responses
 
 ### Initial Program State
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-main2.png" width="350">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-main2.png" width="450">
 
 ### Continue with Withdrawal
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-choose-tags.png" width="350"> 
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-choose-tags.png" width="450"> 
 
 ### View deposits vs. withdrawals
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="350">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="450">
 
 ### View by Tags
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_by_tags.png" width="350">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_by_tags.png" width="450">
 
 ### View by Year Only
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_bar_chart.png" width="350">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_bar_chart.png" width="450">
 
 ### Show Expenses Summary
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-summary.png" width="350">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new-summary.png" width="450">
