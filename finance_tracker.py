@@ -1,14 +1,18 @@
-# ----- Personal Expenses Tracker Graphic User Interface (GUI) Application -----
+# ----- Financial Graphic User Interface (GUI) Application -----
 from tkinter import *
 from tkinter import messagebox
 
 from helper_lib import *
+
+from init_frames import * 
 
 import sqlite3 as sqlite
 import pickle
 
 # Connect application to SQLite DB
 conn = sqlite.connect('expenses.db')
+
+
 
 class ExpenseTracker:
     ###############################################################
@@ -48,7 +52,7 @@ class ExpenseTracker:
 
 
     ###############################################################
-    # INITIALIZE DATABASE & ALL GUI FRAMES 
+    # INITIALIZE DATABASE & FRAMES 
     ###############################################################
     def init_db(self):
         ''' Creates a new database if it DNE. '''
@@ -65,157 +69,23 @@ class ExpenseTracker:
         except: # DB and table already exist
             pass
 
-
     def init_main_frame(self):
-        ''' Initialize Main Frame. '''
-        Label(self.main_frame, text="Main Menu", font=('Arial', 20, 'bold')).grid(column=1, padx=20, pady=20)
-        Label(self.main_frame, text="Current Balance: ", font=('Arial', 15, 'bold'), padx=20).grid(sticky=E)
-
-        self.curr_balance_text = Entry(self.main_frame)
-        self.curr_balance_text.insert(END, '$' + format(self.curr_balance, '.2f'))
-        self.curr_balance_text.config(state="disabled")
-        self.curr_balance_text.grid(row=1, column=1, padx=20, pady=20)
-        
-        Label(self.main_frame, text="Choose an Action: ", font=('Arial', 15, 'bold'), padx=20).grid(row=2, sticky=E)
-
-        new_txn_button = Button(self.main_frame, text="New Transaction")
-        new_txn_button.bind("<Button-1>", self.add_new_txn)
-        new_txn_button.grid(row=2, column=1, padx=5, pady=5)
-
-        visualize_button = Button(self.main_frame, text="Visualize Data")
-        visualize_button.bind("<Button-1>", self.visualize_txn)
-        visualize_button.grid(row=3, column=1, padx=5, pady=5)        
-        
-        view_button = Button(self.main_frame, text="View History")
-        view_button.bind("<Button-1>", self.view_history)
-        view_button.grid(row=4, column=1, padx=5, pady=5)
-
-        quit_button = Button(self.main_frame, text="Save")
-        quit_button.bind("<Button-1>", self.custom_quit)
-        quit_button.grid(row=5, column=1, padx=5, pady=5)
-
+        init_main(root=self)
 
     def init_new_txn_frame(self):
-        ''' Initialize New Transaction Frame. '''
-        Label(self.new_txn_frame, text="Add New Transaction", font=('Arial', 20, 'bold')).grid(column=1, padx=20, pady=20)
-        
-        Label(self.new_txn_frame, text="Amount: ", font=('Arial', 15, 'bold'), padx=20).grid(row=1, sticky=E)
-        self.user_amount = Entry(self.new_txn_frame)
-        self.user_amount.grid(row=1, column=1, padx=5, pady=5)
-        
-        Label(self.new_txn_frame, text="Date (MM/DD/YYYY): ", font=('Arial', 15, 'bold'), padx=20).grid(row=2, sticky=E)
-        self.user_date = Entry(self.new_txn_frame)
-        self.user_date.grid(row=2, column=1, padx=20, pady=20)
-
-        deposit_button = Button(self.new_txn_frame, text="Deposit")
-        deposit_button.bind("<Button-1>", self.deposit_money)
-        deposit_button.grid(row=3, column=1, padx=5, pady=5)
-
-        withdraw_button = Button(self.new_txn_frame, text="Withdraw")
-        withdraw_button.bind("<Button-1>", self.withdraw_money)
-        withdraw_button.grid(row=4, column=1, padx=5, pady=5)
-
-        back_button = Button(self.new_txn_frame, text="Return Home")
-        back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=5, column=1, padx=5, pady=5)
-    
+        init_new_txn(root=self)
 
     def init_withdraw_frame(self):
-        ''' Initialize New Frame specifically for Withdrawals. '''
-        Label(self.withdraw_frame, text="Continue to Withdrawl.", font=('Arial', 15, 'italic')).grid(column=1, padx=15, pady=15)
-        Label(self.withdraw_frame, text="Available Tags: ", font=('Arial', 15, 'bold')).grid(row=1, sticky=E, padx=20)
-
-        tags_listbox = Listbox(self.withdraw_frame, selectmode=BROWSE, height=7)
-        tags = ['Shopping', 'Health', 'Food/Drink', 'Bills', 
-            'Travel', 'Entertainment', 'Other']
-        
-        for tag in tags:
-            tags_listbox.insert(END, tag)
-        
-        tags_listbox.bind("<<ListboxSelect>>", self.get_tag)
-        tags_listbox.grid(row=1, column=1, padx=20, pady=20)
-
-        back_button = Button(self.withdraw_frame, text="Return Home")
-        back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=5, column=1, padx=5, pady=5)
-
+        init_withdraw(root=self)
 
     def init_visualize_frame(self):
-        ''' Initialize Visualize Transactions Frame. '''
-        Label(self.visualize_frame, text="Please specify year (and month).", font=('Arial', 15, 'italic'), padx=20).grid(columnspan=2, padx=20, pady=20)        
-        Label(self.visualize_frame, text="Year (YYYY): ", font=('Arial', 15, 'bold'), padx=20).grid(row=1, sticky=E)
-        Label(self.visualize_frame, text="Month (MM): ", font=('Arial', 15, 'bold'), padx=20).grid(row=2, sticky=E)
-
-        self.year_filter = Entry(self.visualize_frame)
-        self.year_filter.grid(row=1, column=1, padx=5, pady=5)
-        self.month_filter = Entry(self.visualize_frame)
-        self.month_filter.grid(row=2, column=1, padx=20, pady=20)
-        
-        Label(self.visualize_frame, text="View By: ", font=('Arial', 15, 'bold'), padx=20).grid(row=3, sticky=E)
-
-        view_tags_button = Button(self.visualize_frame, text="Tags")
-        view_tags_button.bind("<Button-1>", self.view_by_tag)
-        view_tags_button.grid(row=3, column=1, padx=5, pady=5)
-        
-        view_all_button = Button(self.visualize_frame, 
-            text="Deposits vs. Withdrawals")
-        view_all_button.bind("<Button-1>", self.view_all)
-        view_all_button.grid(row=4, column=1, padx=5, pady=5)
-       
-        view_by_year_button = Button(self.visualize_frame,
-            text="Year Only")
-        view_by_year_button.bind("<Button-1>", self.view_by_year)
-        view_by_year_button.grid(row=5, column=1, padx=5, pady=5)
-       
-        back_button = Button(self.visualize_frame, text="Return Home")
-        back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=6, column=1, padx=5, pady=5)
-
+        init_visualize(root=self)
 
     def init_history_frame(self):
-        ''' Initialize View History Frame. '''
-        # Add filter modes (year and month)
-        Label(self.history_frame, 
-            text="Please specify year and month. ", font=('Arial', 15, 'italic')).grid(columnspan=2, padx=20, pady=20)
-        Label(self.history_frame, text="Year (YYYY): ", font=('Arial', 15, 'bold'), padx=20).grid(row=1, sticky=E)
-        Label(self.history_frame, text="Month (MM): ", font=('Arial', 15, 'bold'), padx=20).grid(row=2, sticky=E)
-        
-        self.hist_year_filter = Entry(self.history_frame)
-        self.hist_year_filter.grid(row=1, column=1, padx=5, pady=5)
-        self.hist_month_filter = Entry(self.history_frame)
-        self.hist_month_filter.grid(row=2, column=1, padx=20, pady=20)
-      
-        show_summary_button = Button(self.history_frame,
-            text="Show Expenses Summary")
-        show_summary_button.bind("<Button-1>", self.show_summary)
-        show_summary_button.grid(row=3, column=1, padx=5, pady=5)
-      
-        back_button = Button(self.history_frame, text="Return Home")
-        back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=4, column=1, padx=5, pady=5)
-
+        init_history(root=self)
 
     def init_summary_frame(self):
-        ''' Initialize Summary Frame. '''
-        header_a = "Displaying 10 transactions at a time."
-        header_b = "Click 'Show More Records' to see next 10 rows."
-
-        prompt_a = Label(self.summary_frame, text=header_a, font=('Arial', 15, 'italic'), pady=20).grid(row=0, columnspan=3)
-        prompt_b = Label(self.summary_frame, text=header_b, font=('Arial', 15, 'italic'), pady=10).grid(row=1, columnspan=3)
-        
-        header_amt = Label(self.summary_frame, text="Amount", font=('Arial', 15, 'bold')).grid(row=2, sticky=W, padx=5, pady=5)
-        header_date = Label(self.summary_frame, text="Date", font=('Arial', 15, 'bold')).grid(row=2, column=1, sticky=W, padx=5, pady=5)
-        header_tag = Label(self.summary_frame, text="Tag", font=('Arial', 15, 'bold')).grid(row=2, column=2, sticky=W, padx=5, pady=5)
-        
-        back_button = Button(self.summary_frame, text="Return Home")
-        back_button.bind("<Button-1>", self.return_to_main)
-        back_button.grid(row=13, column=1, padx=20, pady=20)        
-        
-        # Show More Button (in case > 10 records retrieved)
-        show_more_button = Button(self.summary_frame, text="Show More Records")
-        show_more_button.bind("<Button-1>", self.show_more_records)
-        show_more_button.grid(row=14, column=1, padx=5, pady=5)
-
+        init_summary(root=self)
 
     ###############################################################
     # ACTIVATE QUIT & SAVE BUTTON
@@ -227,7 +97,6 @@ class ExpenseTracker:
             pickle.dump(self.curr_balance, f)
         conn.close()
         self.master.quit()
-
 
     ###############################################################
     # VIEW HISTORY FEATURE
@@ -299,8 +168,7 @@ class ExpenseTracker:
             if (show_more): 
                 self.erase_previous_rows(offset=numToOverwrite)
         else:
-            messagebox.showerror("Error", 
-                      "No more remaining records to be shown for given date range.")
+            messagebox.showerror("Error", "No more remaining records to be shown for given date range.")
             return
 
 
@@ -370,7 +238,7 @@ class ExpenseTracker:
             else:
                 total_deposits[month_digit - 1] = temp_amt
         show_bar_chart(total_deposits, total_withdrawals, user_year)
-
+        
 
     def view_by_tag(self, event):
         ''' Perform SQL Query to view Transactions, 
@@ -536,7 +404,7 @@ class ExpenseTracker:
         global user_year
         global user_month
         user_year, user_month = (0, 0) 
-        
+    
         self.main_frame.tkraise()
         return
 
