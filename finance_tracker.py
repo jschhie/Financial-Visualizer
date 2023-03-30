@@ -411,7 +411,7 @@ class ExpenseTracker:
 
 # Run ExpensesTracker GUI
 root = Tk()
-root.title('Personal Finance Tracker')
-root.geometry("500x600")
+root.title('Financial Visualizer')
+root.geometry("580x580")
 my_tracker = ExpenseTracker(master=root)
 root.mainloop()
