@@ -22,7 +22,7 @@ To run the program on Terminal, for example, enter ``` python3 finance_tracker.p
 Sample User Requests & Program Responses
 
 ### Home View
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/home-edit.png" width="450">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/home3.png" width="450">
 
 ### View deposits vs. withdrawals
 <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="450">
@@ -34,4 +34,4 @@ Sample User Requests & Program Responses
 <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_bar_chart.png" width="450">
 
 ### Show Expenses Summary
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/summary-edit.png" width="450">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/summary3.png" width="450">
