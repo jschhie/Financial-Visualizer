@@ -25,13 +25,13 @@ Sample User Requests & Program Responses
 <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/home3.png" width="450">
 
 ### View deposits vs. withdrawals
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_all_txns.png" width="450">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/by%20dep%20exp.png" width="450">
 
 ### View by Tags
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/sample_by_tags.png" width="450">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/by%20month%20year%20tag.png" width="450">
 
 ### View by Year Only
-<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/valid_txns/new_bar_chart.png" width="450">
+<img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/double%20barh.png" width="450">
 
 ### Show Expenses Summary
 <img src="https://github.com/jschhie/Financial-Visualizer/blob/master/updated_demos/summary3.png" width="450">
