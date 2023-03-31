@@ -237,7 +237,7 @@ class ExpenseTracker:
                 total_withdrawals[month_digit - 1] = temp_amt
             else:
                 total_deposits[month_digit - 1] = temp_amt
-        show_bar_chart(total_deposits, total_withdrawals, user_year)
+        show_year_chart(total_deposits, total_withdrawals, user_year)
         
 
     def view_by_tag(self, event):
@@ -259,8 +259,7 @@ class ExpenseTracker:
         all_amounts = []
         all_tags = []
         for row in cursor: 
-            # Each row is a tuple, so unpack values
-            temp_amt, temp_tag = row
+            temp_amt, temp_tag = row # Each row is a tuple, so unpack values
             all_amounts.append(temp_amt)
             all_tags.append(temp_tag)
 
