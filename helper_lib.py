@@ -4,7 +4,7 @@ import numpy as np
 
 from tkinter import messagebox
 
-
+palette = ['#a1b0d2', '#f2a47d', '#8ac9b5', '#fadf5e', '#bcdb76', '#e2a3cc']
 
 digit_month_map = {1: "Jan.", 2: "Feb.", 3: "Mar.",
                     4: "Apr.", 5: "May", 6: "Jun.",
@@ -77,53 +77,43 @@ def check_txn_input(pending_total, pending_change, user_date, is_deposit_txn):
 
 def show_plot(exp_values, exp_labels, u_month, u_year):
     ''' Creates and displays Pie Chart.'''
-    # Set up pie chart
-    fig, ax = plt.subplots()
-    ax.pie(exp_values, labels=exp_labels, autopct='%1.1f%%', pctdistance=0.85)
-    ax.axis('equal')
 
-    # Draw Donut within Pie
-    center_circle = plt.Circle((0,0), 0.70, fc='white')
-    fig = plt.gcf()
-    fig.gca().add_artist(center_circle)
+    fig, ax = plt.subplots(figsize=(10,5))
+    miny = min(exp_values)
+    ax.set(ylim = (miny - 500 if miny < 0 else 0, max(exp_values)  + 500))
+    
+    bars = plt.bar(exp_labels, exp_values, color=palette, width=0.4, align='center', bottom=None)
+    plt.title('Transactions Summary for %s %d' % (digit_month_map[u_month], u_year), fontweight='bold')
+    plt.xlabel("Category", size=12)
+    plt.ylabel("Total ($) expenses", size=12)
+    ax.bar_label(bars, padding=10, fmt='${:.0f}')
 
-    # Plot data
-    plt.title('Expenses Report for %s %d' % (digit_month_map[u_month], u_year))
-    plt.tight_layout()
     plt.show()
 
 
 
-def autolabel(rects):
-    ''' Sub-helper function to autolabel each bar in the multi-bar graph. ''' 
-    for rect in rects:
-        height = rect.get_height()
-        plt.text(rect.get_x() + rect.get_width() / 2., 1.0 * height,
-        '%d' % int(height),
-        ha='center', va='bottom')
-
-
-
-def show_bar_chart(total_deposits, total_withdrawals, user_year):
-    # Creates and displays the Grouped Bar Chart.
-    bar_width = 0.25
-    r1 = np.arange(len(total_deposits))
-    r2 = [x + bar_width for x in r1]
-
-    rects1 = plt.bar(r1, total_deposits, width=bar_width, 
-        edgecolor='white', label='Total Deposits')
+def show_year_chart(total_deposits, total_withdrawals, user_year):
     
-    rects2 = plt.bar(r2, total_withdrawals, width=bar_width, 
-        edgecolor='white', label='Total Withdrawals')
+    labels = list(digit_month_map.values())
+    height = 0.30
+    y = np.arange(len(labels))
 
-    plt.xlabel('Month')
-    plt.ylabel('Transactions Amount ($)')
-    plt.title('Expenses Report for %d: Transactions Grouped by Month' % user_year)
-    plt.xticks([r + bar_width for r in range(len(total_deposits))], 
-        list((digit_month_map).values()))
+    fig, ax = plt.subplots(figsize=(8,8))
+    xmin = min(total_deposits + total_withdrawals) # in case negative values
+    ax.set(xlim = (xmin - 500 if xmin < 0 else 0, max(total_deposits + total_withdrawals) + 500))
+    rects1 = ax.barh(y - height, total_deposits, height, label='Total Deposits', color=palette[0])
+    rects2 = ax.barh(y, total_withdrawals, height, label='Total Expenses', color=palette[1])
 
-    autolabel(rects1)
-    autolabel(rects2)
+    ax.set_xlabel('Total Transactions ($) Amount')
+    ax.set_yticks(y)
+    ax.set_yticklabels(labels)
 
-    plt.legend()
+    ax.legend(loc='upper right', frameon=False, markerscale=2)
+
+    ax.bar_label(rects1, padding=10, fmt='${:.0f}')
+    ax.bar_label(rects2, padding=10, fmt='${:.0f}')
+
+    plt.xlabel('Total Transactions ($) Amount')
+    plt.ylabel('Months')
+    plt.title('Summary for ' + str(user_year), fontweight='bold')
     plt.show()
