@@ -1,0 +1,10 @@
+updated_demos/
+.DS_STORE
+*.pyc
+__pycache__/
+myenv/
+.env
+venv/
+Pipfile
+*.db
+*.pickle
