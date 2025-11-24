@@ -11,6 +11,8 @@ digit_month_map = {1: "Jan.", 2: "Feb.", 3: "Mar.",
                     7: "Jul.", 8: "Aug.", 9: "Sep.",
                     10: "Oct.", 11: "Nov.", 12: "Dec."}
 
+
+
 def check_view_filters(in_year, in_month=None, ignore_month=False):
     ''' Ensures that user input for Month and Year fields are valid.'''
     try:
@@ -76,8 +78,7 @@ def check_txn_input(pending_total, pending_change, user_date, is_deposit_txn):
 
 
 def show_plot(exp_values, exp_labels, u_month, u_year):
-    ''' Creates and displays Pie Chart.'''
-
+    '''Displays transactions for selected timeframe, categorized by tags or txn type (deposits/expenses)'''
     fig, ax = plt.subplots(figsize=(10,5))
     miny = min(exp_values)
     ax.set(ylim = (miny - 500 if miny < 0 else 0, max(exp_values)  + 500))
@@ -93,7 +94,7 @@ def show_plot(exp_values, exp_labels, u_month, u_year):
 
 
 def show_year_chart(total_deposits, total_withdrawals, user_year):
-    
+    '''Displays year-based summary, organized by transaction type (deposits/expenses)'''
     labels = list(digit_month_map.values())
     height = 0.30
     y = np.arange(len(labels))
